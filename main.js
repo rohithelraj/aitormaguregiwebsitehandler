@@ -2,7 +2,7 @@ const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs').promises;
 const fsSync = require('fs');
-const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
+const { S3Client, PutObjectCommand, DeleteObjectCommand, ListObjectsV2Command, DeleteObjectsCommand } = require('@aws-sdk/client-s3');
 const { Upload } = require('@aws-sdk/lib-storage');
 
 // Determine correct path for content directory (inside or outside asar)
@@ -315,8 +315,7 @@ ipcMain.handle('upload-to-s3', async (event, filePath, s3Key) => {
         Bucket: s3Config.bucket,
         Key: s3Key,
         Body: fileContent,
-        ContentType: contentType,
-        ACL: 'public-read'
+        ContentType: contentType
       }
     });
 
@@ -526,6 +525,141 @@ ipcMain.handle('publish-website', async (event) => {
     };
   } catch (error) {
     mainWindow.webContents.send('publish-progress', { step: 'error', message: error.message });
+    return { success: false, error: error.message };
+  }
+});
+
+// Deploy to Internet: Upload website to S3 bucket
+const WEBSITE_BUCKET = 'aitormaguregiportfolio';
+
+// Helper: Get all files in directory recursively
+async function getAllFilesInDir(dir, baseDir = dir) {
+  const files = [];
+  const entries = await fs.readdir(dir, { withFileTypes: true });
+
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...await getAllFilesInDir(fullPath, baseDir));
+    } else {
+      files.push({
+        localPath: fullPath,
+        s3Key: path.relative(baseDir, fullPath).replace(/\\/g, '/')
+      });
+    }
+  }
+
+  return files;
+}
+
+// Helper: Get content type from file extension
+function getContentType(filePath) {
+  const ext = path.extname(filePath).toLowerCase();
+  const contentTypes = {
+    '.html': 'text/html',
+    '.css': 'text/css',
+    '.js': 'application/javascript',
+    '.json': 'application/json',
+    '.png': 'image/png',
+    '.jpg': 'image/jpeg',
+    '.jpeg': 'image/jpeg',
+    '.gif': 'image/gif',
+    '.svg': 'image/svg+xml',
+    '.webp': 'image/webp',
+    '.ico': 'image/x-icon',
+    '.txt': 'text/plain'
+  };
+  return contentTypes[ext] || 'application/octet-stream';
+}
+
+// Deploy website to S3
+ipcMain.handle('deploy-website', async () => {
+  try {
+    if (!s3Client) {
+      return { success: false, error: 'S3 not configured' };
+    }
+
+    // Check if website has been built
+    if (!fsSync.existsSync(OUTPUT_WEBSITE_DIR)) {
+      return { success: false, error: 'Website not built yet. Click "Publish" first.' };
+    }
+
+    // Step 1: List all objects in bucket
+    mainWindow.webContents.send('deploy-progress', { step: 'listing', message: 'Checking bucket contents...' });
+
+    let objectsToDelete = [];
+    let continuationToken = null;
+
+    do {
+      const listCommand = new ListObjectsV2Command({
+        Bucket: WEBSITE_BUCKET,
+        ContinuationToken: continuationToken
+      });
+
+      const listResponse = await s3Client.send(listCommand);
+
+      if (listResponse.Contents && listResponse.Contents.length > 0) {
+        objectsToDelete.push(...listResponse.Contents.map(obj => ({ Key: obj.Key })));
+      }
+
+      continuationToken = listResponse.NextContinuationToken;
+    } while (continuationToken);
+
+    // Step 2: Delete all existing objects
+    if (objectsToDelete.length > 0) {
+      mainWindow.webContents.send('deploy-progress', {
+        step: 'deleting',
+        message: `Deleting ${objectsToDelete.length} existing file(s)...`
+      });
+
+      // Delete in batches of 1000 (S3 limit)
+      for (let i = 0; i < objectsToDelete.length; i += 1000) {
+        const batch = objectsToDelete.slice(i, i + 1000);
+        const deleteCommand = new DeleteObjectsCommand({
+          Bucket: WEBSITE_BUCKET,
+          Delete: { Objects: batch }
+        });
+        await s3Client.send(deleteCommand);
+      }
+    }
+
+    // Step 3: Upload all files from dist/website
+    mainWindow.webContents.send('deploy-progress', { step: 'uploading', message: 'Uploading website files...' });
+
+    const files = await getAllFilesInDir(OUTPUT_WEBSITE_DIR);
+    let uploadedCount = 0;
+
+    for (const file of files) {
+      const fileContent = await fs.readFile(file.localPath);
+      const contentType = getContentType(file.localPath);
+
+      const uploadCommand = new PutObjectCommand({
+        Bucket: WEBSITE_BUCKET,
+        Key: file.s3Key,
+        Body: fileContent,
+        ContentType: contentType
+      });
+
+      await s3Client.send(uploadCommand);
+      uploadedCount++;
+
+      // Send progress update
+      mainWindow.webContents.send('deploy-progress', {
+        step: 'uploading',
+        message: `Uploading files (${uploadedCount}/${files.length})...`
+      });
+    }
+
+    mainWindow.webContents.send('deploy-progress', { step: 'complete', message: 'Deployment complete!' });
+
+    return {
+      success: true,
+      filesUploaded: uploadedCount,
+      websiteUrl: `http://${WEBSITE_BUCKET}.s3-website-us-east-1.amazonaws.com`
+    };
+  } catch (error) {
+    console.error('Deploy error:', error);
+    mainWindow.webContents.send('deploy-progress', { step: 'error', message: error.message });
     return { success: false, error: error.message };
   }
 });

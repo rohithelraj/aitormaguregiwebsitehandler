@@ -22,4 +22,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   checkContentChanges: () => ipcRenderer.invoke('check-content-changes'),
   publishWebsite: () => ipcRenderer.invoke('publish-website'),
   onPublishProgress: (callback) => ipcRenderer.on('publish-progress', (event, data) => callback(data)),
+
+  // Deploy operations
+  deployWebsite: () => ipcRenderer.invoke('deploy-website'),
+  onDeployProgress: (callback) => ipcRenderer.on('deploy-progress', (event, data) => callback(data)),
 });

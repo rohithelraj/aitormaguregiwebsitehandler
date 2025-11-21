@@ -614,6 +614,21 @@ header h1 {
   opacity: 0.6;
 }
 
+.btn-deploy {
+  background-color: #007bff;
+  font-weight: 600;
+}
+
+.btn-deploy:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.btn-deploy:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 .loading {
   padding: 1rem;
   text-align: center;

@@ -117,7 +117,7 @@ function generateStoryboardPage(storyboards, currentPage, totalPages) {
 
 async function buildSite() {
   const contentDir = path.join(__dirname, 'content/home');
-  const distDir = path.join(__dirname, 'dist');
+  const distDir = path.join(__dirname, 'dist', 'website');
 
   if (!fs.existsSync(distDir)) {
     fs.mkdirSync(distDir, { recursive: true });

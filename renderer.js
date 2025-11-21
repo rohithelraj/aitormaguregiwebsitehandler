@@ -19,6 +19,7 @@ const saveBtn = document.getElementById('saveBtn');
 const toggleViewBtn = document.getElementById('toggleViewBtn');
 const findUrlsBtn = document.getElementById('findUrlsBtn');
 const publishBtn = document.getElementById('publishBtn');
+const deployBtn = document.getElementById('deployBtn');
 const modal = document.getElementById('modal');
 const closeModal = document.querySelector('.close');
 const allUrlsContent = document.getElementById('allUrlsContent');
@@ -36,6 +37,7 @@ saveBtn.addEventListener('click', saveCurrentFile);
 toggleViewBtn.addEventListener('click', toggleView);
 findUrlsBtn.addEventListener('click', showAllS3Urls);
 publishBtn.addEventListener('click', handlePublish);
+deployBtn.addEventListener('click', handleDeploy);
 closeModal.addEventListener('click', () => modal.style.display = 'none');
 closePublishModal.addEventListener('click', () => publishModal.style.display = 'none');
 window.addEventListener('click', (e) => {
@@ -49,6 +51,8 @@ window.electronAPI.onPublishProgress((data) => {
     addPublishLogEntry('✓ Publish Complete', 'success', 'Website has been built and is ready in dist/website');
     publishBtn.disabled = false;
     publishBtn.textContent = 'Publish';
+    // Enable deploy button after successful build
+    deployBtn.disabled = false;
   } else if (data.step === 'error') {
     addPublishLogEntry('✗ Error', 'error', data.message);
     publishBtn.disabled = false;
@@ -56,6 +60,22 @@ window.electronAPI.onPublishProgress((data) => {
   } else {
     addPublishLogEntry(data.message, 'step');
     publishBtn.textContent = data.message;
+  }
+});
+
+// Listen for deploy progress updates
+window.electronAPI.onDeployProgress((data) => {
+  if (data.step === 'complete') {
+    addPublishLogEntry('✓ Deployment Complete', 'success', 'Website is now live on the internet!');
+    deployBtn.disabled = false;
+    deployBtn.textContent = 'Publish to Internet';
+  } else if (data.step === 'error') {
+    addPublishLogEntry('✗ Deploy Error', 'error', data.message);
+    deployBtn.disabled = false;
+    deployBtn.textContent = 'Publish to Internet';
+  } else {
+    addPublishLogEntry(data.message, 'step');
+    deployBtn.textContent = data.message;
   }
 });
 
@@ -951,6 +971,37 @@ async function handlePublish() {
   } finally {
     publishBtn.disabled = false;
     publishBtn.textContent = 'Publish';
+  }
+}
+
+async function handleDeploy() {
+  // Show modal with deployment log
+  publishModal.style.display = 'block';
+
+  // Disable button during deployment
+  deployBtn.disabled = true;
+  deployBtn.textContent = 'Deploying...';
+
+  addPublishLogEntry('Starting deployment to S3...', 'info');
+
+  try {
+    // Start deployment
+    const result = await window.electronAPI.deployWebsite();
+
+    if (result.success) {
+      addPublishLogEntry('✓ Deployment successful!', 'success', `Website is live at: https://aitormaguregiportfolio.s3.amazonaws.com/index.html`);
+      showToast('Website deployed successfully!', 'success');
+    } else {
+      addPublishLogEntry('✗ Deployment failed', 'error', result.error);
+      showToast(`Deployment failed: ${result.error}`, 'error');
+      deployBtn.disabled = false;
+      deployBtn.textContent = 'Publish to Internet';
+    }
+  } catch (error) {
+    addPublishLogEntry('Unexpected deployment error', 'error', error.message);
+    showToast(`Unexpected error: ${error.message}`, 'error');
+    deployBtn.disabled = false;
+    deployBtn.textContent = 'Publish to Internet';
   }
 }
 
