@@ -1,0 +1,6 @@
+{
+  "region": "us-east-1",
+  "bucket": "aitormaguregiportfolioresources",
+  "accessKeyId": "YOUR_ACCESS_KEY_ID",
+  "secretAccessKey": "YOUR_SECRET_ACCESS_KEY"
+}

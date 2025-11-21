@@ -1,0 +1,6 @@
+node_modules/
+dist/
+*.log
+.DS_Store
+content/
+s3-config.json

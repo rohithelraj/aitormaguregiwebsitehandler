@@ -1,0 +1,143 @@
+# Aitor Content Manager
+
+An Electron desktop application for managing JSON content files and S3 bucket URLs for the Aitor Maguregi Digital Visual Artist portfolio.
+
+## Features
+
+- **Browse JSON Files**: View all JSON files from the content directory organized by category with collapsible accordion sections
+- **Form-Based Editing**: Edit JSON content through intuitive form fields with proper labels
+- **Image Thumbnails**: Automatically displays image previews for S3 URLs and image fields
+- **S3 Image Upload**: Upload new images directly to S3 bucket with progress tracking
+- **Dual View Mode**: Toggle between form view and raw JSON editing
+- **S3 URL Management**: View and update S3 bucket URLs with live image previews
+- **Auto-Save**: Preserves data structure and types when saving from form view
+- **Find All S3 URLs**: Scan all files and display a comprehensive list of S3 URLs
+
+## Installation
+
+Dependencies are already installed. If you need to reinstall:
+
+```bash
+npm install
+```
+
+## S3 Configuration
+
+To enable image uploads to S3, you need to configure your AWS credentials.
+
+### Quick Setup
+
+1. **Create dedicated IAM user** (recommended for security)
+   - See detailed guide: **[AWS_SETUP.md](./AWS_SETUP.md)** 📖
+   - This creates a user with minimal permissions for this app only
+
+2. **Add credentials** to `s3-config.json`:
+
+```json
+{
+  "region": "us-east-1",
+  "bucket": "aitormaguregiportfolioresources",
+  "accessKeyId": "YOUR_ACCESS_KEY_ID",
+  "secretAccessKey": "YOUR_SECRET_ACCESS_KEY"
+}
+```
+
+**Security Note:** The `s3-config.json` file is excluded from git to protect your credentials. A template file `s3-config.example.json` is provided for reference.
+
+### Required Permissions
+
+Your IAM user needs these S3 permissions:
+- `s3:PutObject` - Upload files
+- `s3:PutObjectAcl` - Set public-read ACL
+- `s3:ListBucket` - List bucket contents (optional)
+
+**📚 Full AWS setup instructions: [AWS_SETUP.md](./AWS_SETUP.md)**
+
+## Usage
+
+### Starting the App
+
+```bash
+npm start
+```
+
+### Features Overview
+
+1. **File Browser (Left Sidebar)**
+   - Lists all JSON files grouped by category in collapsible accordions
+   - Click category headers to expand/collapse sections
+   - Click any file to open it in the editor
+
+2. **Form Editor (Main Panel - Default View)**
+   - Edit JSON data through intuitive form fields
+   - Image fields automatically display thumbnails
+   - Labels are auto-generated from JSON keys
+   - Supports nested objects and arrays
+   - Real-time image loading from S3 URLs
+
+3. **Toolbar Actions**
+   - **Refresh Files**: Reload the file list
+   - **Find All S3 URLs**: View all S3 URLs across all JSON files
+   - **View Raw JSON / View Form**: Toggle between form and JSON editor
+   - **Save Changes**: Save modifications (or use Cmd/Ctrl+S)
+
+4. **Image Handling & Upload**
+   - Automatically detects image URLs (S3 URLs and common image extensions)
+   - Displays thumbnails below input fields
+   - **Upload New Image** button on each image field
+   - Click to select local image file (jpg, png, gif, webp, svg)
+   - Real-time upload progress bar
+   - Automatically updates JSON with new S3 URL
+   - Preserves folder structure in S3 bucket
+   - Shows loading states and error messages
+
+### Uploading Images
+
+1. Click on any JSON file with image fields
+2. Find the image field you want to update
+3. Click the **"Upload New Image"** button
+4. Select an image file from your computer
+5. Watch the progress bar as it uploads
+6. The URL field automatically updates with the new S3 URL
+7. The preview refreshes to show the new image
+8. Click **Save Changes** to persist the new URL
+
+## Content Directory
+
+The app manages files in the local `content/` directory within the project:
+
+### File Structure
+
+```
+content/
+├── home/
+│   └── home1.json
+├── photography/
+│   ├── photography-1/ through photography-24/
+│   └── photography_thumbs.json
+├── storyboard/
+│   ├── storyboard-1/, storyboard-2/
+│   └── storyboard_thumbs.json
+├── work/
+│   └── mattePainting/
+├── reel/
+│   └── reel.json
+```
+
+**Note:** The `content/` directory is included in `.gitignore` to prevent committing large JSON and image files.
+
+## Keyboard Shortcuts
+
+- **Cmd/Ctrl + S**: Save current file
+
+## Technical Details
+
+- **Framework**: Electron
+- **Security**: Context isolation enabled, Node integration disabled
+- **IPC**: Secure communication between main and renderer processes via preload script
+
+## Safety Features
+
+- JSON validation before saving
+- Error notifications for invalid operations
+- Automatic backup recommendation (manual backups advised)
