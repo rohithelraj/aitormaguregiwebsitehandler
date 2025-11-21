@@ -272,16 +272,20 @@ The app now supports deploying the built website to a separate S3 bucket. This r
 1. Click **Publish** to build the website from your content (creates files in `dist/website`)
 2. After successful build, the **Publish to Internet** button becomes enabled
 3. Click **Publish to Internet** to deploy to S3:
-   - Deletes all existing files in the bucket
-   - Uploads all new website files
-   - Sets public-read ACL on all files
+   - **Step 1**: Deletes all existing files in `aitormaguregiportfolio` bucket
+   - **Step 2**: Uploads all new website files to `aitormaguregiportfolio`
+   - **Step 3**: Backs up JSON files to `aitormaguregiportfolioresources`
+     - Deletes all files in `deployedjsons/` folder
+     - Uploads all JSON files from local `content/` directory to `deployedjsons/` maintaining folder structure
 
 ### Required Permissions:
 
-The IAM policy shown above includes these additional statements for website deployment:
+The IAM policy shown above includes permissions for both website deployment and JSON backup:
 
-- **Statement 3** (`AllowWebsiteDeployment`): Upload and delete permissions for website files
-- **Statement 4** (`AllowWebsiteBucketOperations`): List bucket contents for bulk deletion
+- **Statements 1-2** (`AllowS3UploadAndDelete` + `AllowListBucket`): Permissions for content bucket operations, including JSON backup to `deployedjsons/` folder
+- **Statements 3-4** (`AllowWebsiteDeployment` + `AllowWebsiteBucketOperations`): Upload and delete permissions for website files
+
+All required permissions are included in the single IAM policy - no additional configuration needed.
 
 ### S3 Bucket Configuration:
 

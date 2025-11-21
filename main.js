@@ -650,11 +650,86 @@ ipcMain.handle('deploy-website', async () => {
       });
     }
 
+    // Step 4: Backup JSON files to content bucket
+    mainWindow.webContents.send('deploy-progress', {
+      step: 'backup',
+      message: 'Backing up JSON files to S3...'
+    });
+
+    const CONTENT_BUCKET = s3Config.bucket;
+    const DEPLOYED_JSON_PREFIX = 'deployedjsons/';
+
+    // Step 4a: List and delete all files in deployedjsons folder
+    let jsonObjectsToDelete = [];
+    let jsonContinuationToken = null;
+
+    do {
+      const listCommand = new ListObjectsV2Command({
+        Bucket: CONTENT_BUCKET,
+        Prefix: DEPLOYED_JSON_PREFIX,
+        ContinuationToken: jsonContinuationToken
+      });
+
+      const listResponse = await s3Client.send(listCommand);
+
+      if (listResponse.Contents && listResponse.Contents.length > 0) {
+        jsonObjectsToDelete.push(...listResponse.Contents.map(obj => ({ Key: obj.Key })));
+      }
+
+      jsonContinuationToken = listResponse.NextContinuationToken;
+    } while (jsonContinuationToken);
+
+    // Delete existing JSON backup files
+    if (jsonObjectsToDelete.length > 0) {
+      mainWindow.webContents.send('deploy-progress', {
+        step: 'backup',
+        message: `Clearing old JSON backups (${jsonObjectsToDelete.length} files)...`
+      });
+
+      for (let i = 0; i < jsonObjectsToDelete.length; i += 1000) {
+        const batch = jsonObjectsToDelete.slice(i, i + 1000);
+        const deleteCommand = new DeleteObjectsCommand({
+          Bucket: CONTENT_BUCKET,
+          Delete: { Objects: batch }
+        });
+        await s3Client.send(deleteCommand);
+      }
+    }
+
+    // Step 4b: Get all JSON files from content directory
+    const allContentFiles = await getAllFilesInDir(CONTENT_DIR);
+    const jsonFiles = allContentFiles.filter(file => file.localPath.endsWith('.json'));
+
+    // Step 4c: Upload JSON files to deployedjsons folder
+    let jsonUploadedCount = 0;
+
+    for (const file of jsonFiles) {
+      const fileContent = await fs.readFile(file.localPath);
+      const s3Key = `${DEPLOYED_JSON_PREFIX}${file.s3Key}`;
+
+      const uploadCommand = new PutObjectCommand({
+        Bucket: CONTENT_BUCKET,
+        Key: s3Key,
+        Body: fileContent,
+        ContentType: 'application/json'
+      });
+
+      await s3Client.send(uploadCommand);
+      jsonUploadedCount++;
+
+      // Send progress update
+      mainWindow.webContents.send('deploy-progress', {
+        step: 'backup',
+        message: `Uploading JSON backups (${jsonUploadedCount}/${jsonFiles.length})...`
+      });
+    }
+
     mainWindow.webContents.send('deploy-progress', { step: 'complete', message: 'Deployment complete!' });
 
     return {
       success: true,
       filesUploaded: uploadedCount,
+      jsonFilesBackedUp: jsonUploadedCount,
       websiteUrl: `http://${WEBSITE_BUCKET}.s3-website-us-east-1.amazonaws.com`
     };
   } catch (error) {
