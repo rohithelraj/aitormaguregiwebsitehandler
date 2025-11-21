@@ -70,10 +70,12 @@ npm start
 
 2. **Form Editor (Main Panel - Default View)**
    - Edit JSON data through intuitive form fields
+   - **Accordion for array items** - each item is collapsible
+   - **Only one accordion open at a time** - improves performance
+   - **Lazy loading** - images only load when accordion is expanded
    - Image fields automatically display thumbnails
    - Labels are auto-generated from JSON keys
    - Supports nested objects and arrays
-   - Real-time image loading from S3 URLs
 
 3. **Toolbar Actions**
    - **Refresh Files**: Reload the file list

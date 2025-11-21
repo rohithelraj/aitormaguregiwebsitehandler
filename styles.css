@@ -351,24 +351,127 @@ header h1 {
   background-color: #2a2d2e;
   border: 1px solid #3e3e42;
   border-radius: 4px;
-  padding: 1rem;
+  padding: 0.5rem;
 }
 
 .array-item {
   background-color: #1e1e1e;
   border-radius: 4px;
-  padding: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
+  overflow: hidden;
 }
 
 .array-item:last-child {
   margin-bottom: 0;
 }
 
+.array-item-header {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #252526;
+  transition: background-color 0.2s;
+  user-select: none;
+}
+
+.array-item-header:hover {
+  background-color: #2a2d2e;
+}
+
+.array-item-header.expanded {
+  background-color: #2a2d2e;
+}
+
+.array-item-title {
+  font-weight: 500;
+  color: #d4d4d4;
+  font-size: 0.9rem;
+}
+
+.array-item-icon {
+  color: #888;
+  font-size: 0.7rem;
+  transition: transform 0.2s;
+}
+
+.array-item-header.expanded .array-item-icon {
+  transform: rotate(90deg);
+}
+
+.array-item-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+  padding: 0 1rem;
+}
+
+.array-item-content.expanded {
+  max-height: 5000px;
+  padding: 1rem;
+  transition: max-height 0.5s ease-in;
+}
+
 .nested-field {
   margin-left: 1rem;
   padding-left: 1rem;
   border-left: 2px solid #3e3e42;
+}
+
+.nested-accordion {
+  background-color: #1e1e1e;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  overflow: hidden;
+}
+
+.nested-accordion-header {
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #2a2d2e;
+  transition: background-color 0.2s;
+  user-select: none;
+}
+
+.nested-accordion-header:hover {
+  background-color: #323233;
+}
+
+.nested-accordion-header.expanded {
+  background-color: #323233;
+}
+
+.nested-accordion-title {
+  font-weight: 500;
+  color: #4ec9b0;
+  font-size: 0.85rem;
+}
+
+.nested-accordion-icon {
+  color: #888;
+  font-size: 0.7rem;
+  transition: transform 0.2s;
+}
+
+.nested-accordion-header.expanded .nested-accordion-icon {
+  transform: rotate(90deg);
+}
+
+.nested-accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+  padding: 0 0.75rem;
+}
+
+.nested-accordion-content.expanded {
+  max-height: 3000px;
+  padding: 0.75rem;
+  transition: max-height 0.5s ease-in;
 }
 
 

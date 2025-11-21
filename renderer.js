@@ -255,7 +255,7 @@ function renderTextField(container, path, value) {
   }
 }
 
-function renderImageField(container, path, url) {
+function renderImageField(container, path, url, lazyLoad = false) {
   const input = document.createElement('input');
   input.type = 'text';
   input.className = 'form-input';
@@ -274,7 +274,6 @@ function renderImageField(container, path, url) {
   uploadBtn.type = 'button';
   uploadBtn.className = 'btn-upload';
   uploadBtn.textContent = 'Upload New Image';
-  uploadBtn.onclick = () => handleImageUpload(input, path, preview, uploadStatus, progressBar);
 
   const uploadStatus = document.createElement('span');
   uploadStatus.className = 'upload-status';
@@ -298,6 +297,47 @@ function renderImageField(container, path, url) {
   // Image preview
   const preview = document.createElement('div');
   preview.className = 'image-preview';
+
+  if (lazyLoad) {
+    preview.innerHTML = '<div class="image-loading">Click to load image</div>';
+    preview.style.cursor = 'pointer';
+    preview.dataset.loaded = 'false';
+    preview.dataset.url = url;
+
+    // Load image on click
+    preview.addEventListener('click', function loadImage() {
+      if (preview.dataset.loaded === 'false') {
+        preview.dataset.loaded = 'true';
+        preview.style.cursor = 'default';
+        loadImageIntoPreview(preview, url);
+        preview.removeEventListener('click', loadImage);
+      }
+    });
+  } else {
+    preview.innerHTML = '<div class="image-loading">Loading image...</div>';
+    loadImageIntoPreview(preview, url);
+  }
+
+  imageField.appendChild(preview);
+  container.appendChild(imageField);
+
+  // Set upload button handler after preview is created
+  uploadBtn.onclick = () => handleImageUpload(input, path, preview, uploadStatus, progressBar);
+
+  // Listen for input changes to update preview
+  input.addEventListener('change', () => {
+    const newUrl = input.value;
+    if (newUrl) {
+      preview.innerHTML = '<div class="image-loading">Loading image...</div>';
+      preview.dataset.loaded = 'true';
+      preview.style.cursor = 'default';
+      loadImageIntoPreview(preview, newUrl);
+    }
+  });
+}
+
+// Helper function to load image into preview
+function loadImageIntoPreview(preview, url) {
   preview.innerHTML = '<div class="image-loading">Loading image...</div>';
 
   const img = document.createElement('img');
@@ -312,29 +352,6 @@ function renderImageField(container, path, url) {
   img.onerror = () => {
     preview.innerHTML = '<div class="image-error">Failed to load image</div>';
   };
-
-  imageField.appendChild(preview);
-  container.appendChild(imageField);
-
-  // Listen for input changes to update preview
-  input.addEventListener('change', () => {
-    const newUrl = input.value;
-    if (newUrl) {
-      preview.innerHTML = '<div class="image-loading">Loading image...</div>';
-      const newImg = document.createElement('img');
-      newImg.src = newUrl;
-      newImg.alt = 'Image preview';
-
-      newImg.onload = () => {
-        preview.innerHTML = '';
-        preview.appendChild(newImg);
-      };
-
-      newImg.onerror = () => {
-        preview.innerHTML = '<div class="image-error">Failed to load image</div>';
-      };
-    }
-  });
 }
 
 function renderArrayField(container, arr, path) {
@@ -346,27 +363,83 @@ function renderArrayField(container, arr, path) {
     const arrayItem = document.createElement('div');
     arrayItem.className = 'array-item';
 
-    const itemLabel = document.createElement('div');
-    itemLabel.className = 'form-label';
-    itemLabel.textContent = `Item ${index + 1}`;
-    arrayItem.appendChild(itemLabel);
-
+    // Get title for accordion header
+    let itemTitle = `Item ${index + 1}`;
     if (typeof item === 'object' && item !== null && !Array.isArray(item)) {
-      renderObjectFields(arrayItem, item, itemPath);
-    } else if (typeof item === 'string') {
-      if (isImageUrl(item)) {
-        renderImageField(arrayItem, itemPath, item);
-      } else {
-        renderTextField(arrayItem, itemPath, item);
-      }
-    } else {
-      renderTextField(arrayItem, itemPath, String(item));
+      if (item.title) itemTitle = item.title;
+      else if (item.name) itemTitle = item.name;
+      else if (item.imageName) itemTitle = item.imageName;
     }
 
+    // Create accordion header
+    const header = document.createElement('div');
+    header.className = 'array-item-header';
+
+    const title = document.createElement('div');
+    title.className = 'array-item-title';
+    title.textContent = itemTitle;
+
+    const icon = document.createElement('div');
+    icon.className = 'array-item-icon';
+    icon.textContent = '▶';
+
+    header.appendChild(title);
+    header.appendChild(icon);
+
+    // Create accordion content
+    const content = document.createElement('div');
+    content.className = 'array-item-content';
+    content.dataset.loaded = 'false';
+
+    // Click handler for accordion
+    header.addEventListener('click', () => {
+      const isExpanded = header.classList.contains('expanded');
+
+      // Close all other accordions in this array
+      const allItems = arrayField.querySelectorAll('.array-item-header');
+      allItems.forEach(otherHeader => {
+        if (otherHeader !== header) {
+          otherHeader.classList.remove('expanded');
+          otherHeader.nextElementSibling.classList.remove('expanded');
+        }
+      });
+
+      if (isExpanded) {
+        header.classList.remove('expanded');
+        content.classList.remove('expanded');
+      } else {
+        header.classList.add('expanded');
+        content.classList.add('expanded');
+
+        // Lazy load content on first expand
+        if (content.dataset.loaded === 'false') {
+          content.dataset.loaded = 'true';
+          loadArrayItemContent(content, item, itemPath);
+        }
+      }
+    });
+
+    arrayItem.appendChild(header);
+    arrayItem.appendChild(content);
     arrayField.appendChild(arrayItem);
   });
 
   container.appendChild(arrayField);
+}
+
+// Helper function to load array item content
+function loadArrayItemContent(container, item, itemPath) {
+  if (typeof item === 'object' && item !== null && !Array.isArray(item)) {
+    renderObjectFields(container, item, itemPath);
+  } else if (typeof item === 'string') {
+    if (isImageUrl(item)) {
+      renderImageField(container, itemPath, item, true); // true = lazy load
+    } else {
+      renderTextField(container, itemPath, item);
+    }
+  } else {
+    renderTextField(container, itemPath, String(item));
+  }
 }
 
 function isImageUrl(value) {
