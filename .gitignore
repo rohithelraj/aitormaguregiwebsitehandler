@@ -4,3 +4,4 @@ dist/
 .DS_Store
 content/
 s3-config.json
+.idea
