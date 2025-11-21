@@ -4,7 +4,10 @@ const fs = require('fs').promises;
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const { Upload } = require('@aws-sdk/lib-storage');
 
-const CONTENT_DIR = path.join(__dirname, 'content');
+// Determine correct path for content directory (inside or outside asar)
+const CONTENT_DIR = app.isPackaged
+  ? path.join(process.resourcesPath, 'content')
+  : path.join(__dirname, 'content');
 
 // Load S3 configuration
 let s3Client = null;
@@ -12,7 +15,9 @@ let s3Config = null;
 
 async function loadS3Config() {
   try {
-    const configPath = path.join(__dirname, 's3-config.json');
+    const configPath = app.isPackaged
+      ? path.join(process.resourcesPath, 's3-config.json')
+      : path.join(__dirname, 's3-config.json');
     const configData = await fs.readFile(configPath, 'utf-8');
     s3Config = JSON.parse(configData);
 

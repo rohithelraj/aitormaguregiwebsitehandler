@@ -5,3 +5,15 @@ dist/
 content/
 s3-config.json
 .idea
+
+# Build outputs
+/dist
+/out
+*.exe
+*.dmg
+*.AppImage
+*.deb
+*.snap
+
+# electron-builder cache
+.cache/
