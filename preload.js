@@ -6,6 +6,11 @@ contextBridge.exposeInMainWorld('electronAPI', {
   writeJsonFile: (filePath, content) => ipcRenderer.invoke('write-json-file', filePath, content),
   findS3Urls: () => ipcRenderer.invoke('find-s3-urls'),
 
+  // File management
+  createJsonFile: (category, fileName, initialData) => ipcRenderer.invoke('create-json-file', category, fileName, initialData),
+  deleteJsonFile: (filePath) => ipcRenderer.invoke('delete-json-file', filePath),
+  getNextNumber: (category) => ipcRenderer.invoke('get-next-number', category),
+
   // S3 operations
   s3IsConfigured: () => ipcRenderer.invoke('s3-is-configured'),
   selectImageFile: () => ipcRenderer.invoke('select-image-file'),

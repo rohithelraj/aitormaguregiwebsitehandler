@@ -92,6 +92,13 @@ header h1 {
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  flex: 1;
+}
+
+.accordion-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
 }
 
 .accordion-icon {
@@ -102,6 +109,42 @@ header h1 {
 
 .accordion-header.expanded .accordion-icon {
   transform: rotate(90deg);
+}
+
+.btn-add-file {
+  background-color: #4ec9b0;
+  color: #1e1e1e;
+  border: none;
+  border-radius: 3px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.btn-add-file:hover {
+  background-color: #5ed9c0;
+}
+
+.btn-delete-file {
+  background-color: transparent;
+  color: #f48771;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background-color 0.2s;
+  opacity: 0;
+}
+
+.file-item:hover .btn-delete-file {
+  opacity: 1;
+}
+
+.btn-delete-file:hover {
+  background-color: rgba(244, 135, 113, 0.2);
 }
 
 .accordion-content {
@@ -352,6 +395,56 @@ header h1 {
   border: 1px solid #3e3e42;
   border-radius: 4px;
   padding: 0.5rem;
+  position: relative;
+}
+
+.array-field-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  background-color: #1e1e1e;
+  border-radius: 4px;
+}
+
+.array-field-title {
+  font-weight: 500;
+  color: #4ec9b0;
+  font-size: 0.9rem;
+}
+
+.btn-add-item {
+  background-color: #4ec9b0;
+  color: #1e1e1e;
+  border: none;
+  border-radius: 3px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.btn-add-item:hover {
+  background-color: #5ed9c0;
+}
+
+.btn-delete-item {
+  background-color: transparent;
+  color: #f48771;
+  border: 1px solid #f48771;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.7rem;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.2s;
+  margin-left: 0.5rem;
+}
+
+.btn-delete-item:hover {
+  background-color: #f48771;
+  color: #1e1e1e;
 }
 
 .array-item {

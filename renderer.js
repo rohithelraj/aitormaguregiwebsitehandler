@@ -90,12 +90,29 @@ function displayFileList(files) {
     accordionTitle.className = 'accordion-title';
     accordionTitle.textContent = category;
 
+    const accordionActions = document.createElement('div');
+    accordionActions.className = 'accordion-actions';
+
+    // Add "+" button for manageable categories
+    if (['home', 'photography', 'storyboard'].includes(category)) {
+      const addBtn = document.createElement('button');
+      addBtn.className = 'btn-add-file';
+      addBtn.textContent = '+ New';
+      addBtn.onclick = (e) => {
+        e.stopPropagation();
+        handleCreateFile(category);
+      };
+      accordionActions.appendChild(addBtn);
+    }
+
     const accordionIcon = document.createElement('div');
     accordionIcon.className = 'accordion-icon';
     accordionIcon.textContent = '▶';
 
+    accordionActions.appendChild(accordionIcon);
+
     accordionHeader.appendChild(accordionTitle);
-    accordionHeader.appendChild(accordionIcon);
+    accordionHeader.appendChild(accordionActions);
 
     // Create accordion content
     const accordionContent = document.createElement('div');
@@ -108,14 +125,39 @@ function displayFileList(files) {
       fileItem.dataset.filePath = file;
 
       const fileName = file.split('/').pop();
+
+      // File name container
+      const fileNameContainer = document.createElement('div');
+      fileNameContainer.style.flex = '1';
+      fileNameContainer.style.cursor = 'pointer';
+
+      const fileNameSpan = document.createElement('span');
+      fileNameSpan.textContent = fileName;
+      fileNameContainer.appendChild(fileNameSpan);
+
       const filePathDiv = document.createElement('div');
       filePathDiv.className = 'file-path';
       filePathDiv.textContent = cleanFilePath(file);
+      fileNameContainer.appendChild(filePathDiv);
 
-      fileItem.textContent = fileName;
-      fileItem.appendChild(filePathDiv);
+      fileNameContainer.addEventListener('click', () => loadFile(file));
 
-      fileItem.addEventListener('click', () => loadFile(file));
+      fileItem.appendChild(fileNameContainer);
+      fileItem.style.display = 'flex';
+      fileItem.style.alignItems = 'center';
+      fileItem.style.justifyContent = 'space-between';
+
+      // Add delete button for manageable categories
+      if (['home', 'photography', 'storyboard'].includes(category)) {
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'btn-delete-file';
+        deleteBtn.textContent = '×';
+        deleteBtn.onclick = (e) => {
+          e.stopPropagation();
+          handleDeleteFile(file, category);
+        };
+        fileItem.appendChild(deleteBtn);
+      }
 
       accordionContent.appendChild(fileItem);
     });
@@ -358,6 +400,32 @@ function renderArrayField(container, arr, path) {
   const arrayField = document.createElement('div');
   arrayField.className = 'array-field';
 
+  // Check if this is a manageable thumbs array (photography_thumbs or storyboard_thumbs)
+  const isManageable = currentFilePath && (
+    currentFilePath.includes('photography_thumbs.json') ||
+    currentFilePath.includes('storyboard_thumbs.json')
+  );
+
+  // Add header with Add button for manageable arrays
+  if (isManageable) {
+    const arrayHeader = document.createElement('div');
+    arrayHeader.className = 'array-field-header';
+
+    const arrayTitle = document.createElement('div');
+    arrayTitle.className = 'array-field-title';
+    arrayTitle.textContent = 'Items';
+
+    const addItemBtn = document.createElement('button');
+    addItemBtn.type = 'button';
+    addItemBtn.className = 'btn-add-item';
+    addItemBtn.textContent = '+ Add Item';
+    addItemBtn.onclick = () => handleAddArrayItem(path);
+
+    arrayHeader.appendChild(arrayTitle);
+    arrayHeader.appendChild(addItemBtn);
+    arrayField.appendChild(arrayHeader);
+  }
+
   arr.forEach((item, index) => {
     const itemPath = path ? `${path}[${index}]` : `[${index}]`;
     const arrayItem = document.createElement('div');
@@ -378,13 +446,33 @@ function renderArrayField(container, arr, path) {
     const title = document.createElement('div');
     title.className = 'array-item-title';
     title.textContent = itemTitle;
+    title.style.flex = '1';
+
+    const headerActions = document.createElement('div');
+    headerActions.style.display = 'flex';
+    headerActions.style.alignItems = 'center';
+    headerActions.style.gap = '0.5rem';
+
+    // Add delete button for manageable arrays
+    if (isManageable) {
+      const deleteBtn = document.createElement('button');
+      deleteBtn.type = 'button';
+      deleteBtn.className = 'btn-delete-item';
+      deleteBtn.textContent = 'Delete';
+      deleteBtn.onclick = (e) => {
+        e.stopPropagation();
+        handleDeleteArrayItem(path, index, itemTitle);
+      };
+      headerActions.appendChild(deleteBtn);
+    }
 
     const icon = document.createElement('div');
     icon.className = 'array-item-icon';
     icon.textContent = '▶';
+    headerActions.appendChild(icon);
 
     header.appendChild(title);
-    header.appendChild(icon);
+    header.appendChild(headerActions);
 
     // Create accordion content
     const content = document.createElement('div');
@@ -714,4 +802,135 @@ function showToast(message, type = 'success') {
   setTimeout(() => {
     toast.classList.remove('show');
   }, 3000);
+}
+
+// File Management Functions
+
+async function handleCreateFile(category) {
+  // Get next available number
+  const numberResult = await window.electronAPI.getNextNumber(category);
+
+  if (!numberResult.success) {
+    showToast(`Failed to get next number: ${numberResult.error}`, 'error');
+    return;
+  }
+
+  const nextNum = numberResult.nextNumber;
+  let fileName, initialData;
+
+  if (category === 'home') {
+    fileName = `home${nextNum}.json`;
+    initialData = {
+      imageName: "New Image",
+      src: ""
+    };
+  } else if (category === 'photography') {
+    fileName = `photography${nextNum}.json`;
+    initialData = {
+      title: "New Photography",
+      description: "",
+      image: ""
+    };
+  } else if (category === 'storyboard') {
+    fileName = `storyboard${nextNum}.json`;
+    initialData = {
+      title: "New Storyboard",
+      description: "",
+      images: []
+    };
+  }
+
+  const result = await window.electronAPI.createJsonFile(category, fileName, initialData);
+
+  if (result.success) {
+    showToast(`Created ${fileName}`);
+    // Refresh file list
+    await loadJsonFiles();
+    // Load the new file
+    loadFile(result.filePath);
+  } else {
+    showToast(`Failed to create file: ${result.error}`, 'error');
+  }
+}
+
+async function handleDeleteFile(filePath, category) {
+  const fileName = filePath.split('/').pop();
+
+  // Don't delete thumbs files
+  if (fileName.includes('_thumbs.json')) {
+    showToast('Cannot delete thumbs files', 'error');
+    return;
+  }
+
+  if (!confirm(`Are you sure you want to delete ${fileName}?`)) {
+    return;
+  }
+
+  const result = await window.electronAPI.deleteJsonFile(filePath);
+
+  if (result.success) {
+    showToast(`Deleted ${fileName}`);
+
+    // If this was the currently open file, clear the editor
+    if (currentFilePath === filePath) {
+      currentFilePath = null;
+      editorContainer.style.display = 'none';
+      emptyState.style.display = 'flex';
+    }
+
+    // Refresh file list
+    await loadJsonFiles();
+  } else {
+    showToast(`Failed to delete file: ${result.error}`, 'error');
+  }
+}
+
+// Array Item Management Functions
+
+function handleAddArrayItem(path) {
+  // Get the current data
+  const data = collectFormData();
+
+  // Determine default item structure based on file type
+  let newItem;
+  if (currentFilePath.includes('photography_thumbs')) {
+    newItem = {
+      title: "New Photography",
+      thumbUrl: ""
+    };
+  } else if (currentFilePath.includes('storyboard_thumbs')) {
+    newItem = {
+      title: "New Storyboard",
+      thumbUrl: ""
+    };
+  }
+
+  // Add the new item to the array
+  if (Array.isArray(data)) {
+    data.push(newItem);
+  }
+
+  // Update the current data and re-render
+  currentJsonData = data;
+  renderFormView(data);
+  showToast('Item added - remember to save!');
+}
+
+function handleDeleteArrayItem(path, index, itemTitle) {
+  if (!confirm(`Are you sure you want to delete "${itemTitle}"?`)) {
+    return;
+  }
+
+  // Get the current data
+  const data = collectFormData();
+
+  // Remove the item from the array
+  if (Array.isArray(data)) {
+    data.splice(index, 1);
+  }
+
+  // Update the current data and re-render
+  currentJsonData = data;
+  renderFormView(data);
+  showToast('Item deleted - remember to save!');
 }

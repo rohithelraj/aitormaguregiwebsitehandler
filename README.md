@@ -5,6 +5,8 @@ An Electron desktop application for managing JSON content files and S3 bucket UR
 ## Features
 
 - **Browse JSON Files**: View all JSON files from the content directory organized by category with collapsible accordion sections
+- **Create/Delete Files**: Add new JSON files for home, photography, and storyboard categories
+- **Manage Array Items**: Add and delete items in photography_thumbs.json and storyboard_thumbs.json
 - **Form-Based Editing**: Edit JSON content through intuitive form fields with proper labels
 - **Image Thumbnails**: Automatically displays image previews for S3 URLs and image fields
 - **S3 Image Upload**: Upload new images directly to S3 bucket with progress tracking
@@ -66,12 +68,17 @@ npm start
 1. **File Browser (Left Sidebar)**
    - Lists all JSON files grouped by category in collapsible accordions
    - Click category headers to expand/collapse sections
+   - **"+ New" button** on home, photography, and storyboard categories
+   - **Delete button (×)** appears on hover for manageable files
    - Click any file to open it in the editor
+   - Automatically creates folders for photography and storyboard files
 
 2. **Form Editor (Main Panel - Default View)**
    - Edit JSON data through intuitive form fields
    - **Accordion for array items** - each item is collapsible
    - **Only one accordion open at a time** - improves performance
+   - **"+ Add Item" button** for thumbs files (photography_thumbs.json, storyboard_thumbs.json)
+   - **Delete button** on each array item accordion for removal
    - **Lazy loading** - images only load when accordion is expanded
    - Image fields automatically display thumbnails
    - Labels are auto-generated from JSON keys
@@ -92,6 +99,50 @@ npm start
    - Automatically updates JSON with new S3 URL
    - Preserves folder structure in S3 bucket
    - Shows loading states and error messages
+
+### Creating New Files
+
+**For Photography and Storyboard:**
+1. Expand the category in the sidebar
+2. Click the **"+ New"** button in the header
+3. A new file is automatically created with the next available number
+   - Photography: `photography-N/photographyN.json`
+   - Storyboard: `storyboard-N/storyboardN.json`
+4. The file opens automatically in the editor
+5. Fill in the details and click **Save**
+
+**For Home:**
+1. Expand the home category
+2. Click the **"+ New"** button
+3. Creates `homeN.json` with next available number
+4. Edit and save
+
+### Deleting Files
+
+1. Hover over any file in home, photography, or storyboard
+2. Click the **×** button that appears
+3. Confirm deletion
+4. The file and its folder (if applicable) are removed
+
+**Note:** Thumbs files (photography_thumbs.json, storyboard_thumbs.json) cannot be deleted.
+
+### Managing Array Items
+
+**For photography_thumbs.json and storyboard_thumbs.json:**
+
+**Add New Item:**
+1. Open the thumbs file
+2. Click **"+ Add Item"** button at the top
+3. A new item is added to the end
+4. Expand it and fill in title and thumbUrl
+5. Click **Save Changes**
+
+**Delete Item:**
+1. Find the item you want to remove
+2. Expand its accordion
+3. Click **Delete** button in the header
+4. Confirm deletion
+5. Click **Save Changes**
 
 ### Uploading Images
 

@@ -5,6 +5,16 @@ All notable changes to the Aitor Content Manager will be documented in this file
 ## [Unreleased]
 
 ### Added
+- **Create new JSON files** - Add new files for home, photography, and storyboard categories
+- **Delete JSON files** - Remove unwanted files with confirmation
+- **Add array items** - Create new items in photography_thumbs.json and storyboard_thumbs.json
+- **Delete array items** - Remove items from thumb arrays with confirmation
+- **Auto-numbering** - Automatically assigns next available number to new files
+- **Folder management** - Automatically creates and cleans up subdirectories for photography and storyboard
+- **"+ New" button** - Visible on manageable category headers in sidebar
+- **Delete button (×)** - Appears on hover for deletable files
+- **"+ Add Item" button** - Available in thumbs file arrays
+- **Delete button** - On each array item accordion for easy removal
 - **Accordion UI for array items** - Each item in arrays is now collapsible
 - **One-at-a-time accordion** - Only one array item can be expanded at a time for better performance
 - **Lazy loading for images** - Images in accordions only load when expanded

@@ -142,6 +142,116 @@ function extractS3Urls(content) {
   return content.match(s3Regex) || [];
 }
 
+// File Management Handlers
+
+// Create new JSON file
+ipcMain.handle('create-json-file', async (event, category, fileName, initialData) => {
+  try {
+    let filePath;
+    let folderPath;
+
+    // Determine file path based on category
+    if (category === 'home') {
+      filePath = path.join(CONTENT_DIR, 'home', fileName);
+    } else if (category === 'photography') {
+      // Photography files go in subdirectories
+      const folderName = fileName.replace('.json', '');
+      folderPath = path.join(CONTENT_DIR, 'photography', folderName);
+      filePath = path.join(folderPath, fileName);
+    } else if (category === 'storyboard') {
+      // Storyboard files go in subdirectories
+      const folderName = fileName.replace('.json', '');
+      folderPath = path.join(CONTENT_DIR, 'storyboard', folderName);
+      filePath = path.join(folderPath, fileName);
+    } else {
+      return { success: false, error: 'Invalid category' };
+    }
+
+    // Check if file already exists
+    try {
+      await fs.access(filePath);
+      return { success: false, error: 'File already exists' };
+    } catch {
+      // File doesn't exist, continue
+    }
+
+    // Create folder if needed
+    if (folderPath) {
+      await fs.mkdir(folderPath, { recursive: true });
+    }
+
+    // Write initial data
+    const content = JSON.stringify(initialData, null, 2);
+    await fs.writeFile(filePath, content, 'utf-8');
+
+    return { success: true, filePath };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+});
+
+// Delete JSON file
+ipcMain.handle('delete-json-file', async (event, filePath) => {
+  try {
+    // Check if file exists
+    await fs.access(filePath);
+
+    // Delete the file
+    await fs.unlink(filePath);
+
+    // If it's in a subdirectory (photography or storyboard), try to delete the directory if empty
+    const dirPath = path.dirname(filePath);
+    const dirName = path.basename(dirPath);
+
+    if (dirName.startsWith('photography-') || dirName.startsWith('storyboard-')) {
+      try {
+        const files = await fs.readdir(dirPath);
+        if (files.length === 0) {
+          await fs.rmdir(dirPath);
+        }
+      } catch {
+        // Directory not empty or other error, ignore
+      }
+    }
+
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+});
+
+// Get next available number for a category
+ipcMain.handle('get-next-number', async (event, category) => {
+  try {
+    const categoryPath = path.join(CONTENT_DIR, category);
+    const entries = await fs.readdir(categoryPath, { withFileTypes: true });
+
+    let maxNum = 0;
+
+    if (category === 'home') {
+      // Look for home*.json files
+      entries.forEach(entry => {
+        if (entry.isFile() && entry.name.match(/^home(\d+)\.json$/)) {
+          const num = parseInt(entry.name.match(/\d+/)[0]);
+          if (num > maxNum) maxNum = num;
+        }
+      });
+    } else {
+      // Look for photography-* or storyboard-* directories
+      entries.forEach(entry => {
+        if (entry.isDirectory() && entry.name.match(new RegExp(`^${category}-(\\d+)$`))) {
+          const num = parseInt(entry.name.match(/\d+/)[0]);
+          if (num > maxNum) maxNum = num;
+        }
+      });
+    }
+
+    return { success: true, nextNumber: maxNum + 1 };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+});
+
 // S3 Upload Handlers
 
 // Check if S3 is configured
