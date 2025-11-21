@@ -2,7 +2,6 @@ const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs').promises;
 const fsSync = require('fs');
-const { execSync } = require('child_process');
 const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const { Upload } = require('@aws-sdk/lib-storage');
 
@@ -372,11 +371,11 @@ ipcMain.handle('delete-from-s3', async (event, s3Url) => {
 
 // Publish Handlers
 
-const MAIN_PROJECT_PATH = '/Users/ro.raju/private/aitormaguregidigitalvisualartist';
-const MAIN_PROJECT_CONTENT = path.join(MAIN_PROJECT_PATH, 'content');
-const OUTPUT_WEBSITE_DIR = app.isPackaged
-  ? path.join(process.resourcesPath, 'dist', 'website')
-  : path.join(__dirname, 'dist', 'website');
+// Use bundled build system instead of external React project
+const BUILD_PROJECT_PATH = app.isPackaged
+  ? process.resourcesPath
+  : __dirname;
+const OUTPUT_WEBSITE_DIR = path.join(BUILD_PROJECT_PATH, 'dist', 'website');
 
 // Helper: Compare two JSON files
 async function compareJsonFiles(file1, file2) {
@@ -466,53 +465,64 @@ async function copyDirectory(src, dest) {
   }
 }
 
-// Check for changes between handler and main project
+// Check for changes - now just checks if content directory has been modified
 ipcMain.handle('check-content-changes', async () => {
   try {
-    const changes = await compareDirectories(CONTENT_DIR, MAIN_PROJECT_CONTENT);
+    // Simple check: if dist/website doesn't exist or content is newer, rebuild needed
+    const distExists = fsSync.existsSync(OUTPUT_WEBSITE_DIR);
+
+    if (!distExists) {
+      return { success: true, hasChanges: true, changes: [{ type: 'new', path: 'Initial build needed' }] };
+    }
+
+    // Check if any content file is newer than dist directory
+    const contentFiles = await getAllFiles(CONTENT_DIR);
+    const distStat = await fs.stat(OUTPUT_WEBSITE_DIR);
+
+    const changes = [];
+    for (const file of contentFiles) {
+      const fileStat = await fs.stat(file);
+      if (fileStat.mtime > distStat.mtime) {
+        const relativePath = path.relative(CONTENT_DIR, file);
+        changes.push({ type: 'modified', path: relativePath });
+      }
+    }
+
     return { success: true, hasChanges: changes.length > 0, changes };
   } catch (error) {
     return { success: false, error: error.message };
   }
 });
 
-// Publish: Copy content and rebuild website
+// Publish: Build website from content
 ipcMain.handle('publish-website', async (event) => {
   try {
-    // Step 1: Copy content from handler to main project
-    mainWindow.webContents.send('publish-progress', { step: 'copying', message: 'Copying content files...' });
-
-    // Remove old content
-    await fs.rm(MAIN_PROJECT_CONTENT, { recursive: true, force: true });
-    // Copy new content
-    await copyDirectory(CONTENT_DIR, MAIN_PROJECT_CONTENT);
-
-    // Step 2: Run build script in main project
+    // Step 1: Run build script
     mainWindow.webContents.send('publish-progress', { step: 'building', message: 'Building website...' });
 
     try {
-      execSync('node build.js', {
-        cwd: MAIN_PROJECT_PATH,
-        stdio: 'pipe',
-        encoding: 'utf8'
-      });
+      // Ensure output directory exists
+      await fs.mkdir(OUTPUT_WEBSITE_DIR, { recursive: true });
+
+      // Import and run build function directly (works in packaged app)
+      const buildPath = path.join(BUILD_PROJECT_PATH, 'build.js');
+
+      // Clear require cache to ensure fresh build
+      delete require.cache[require.resolve(buildPath)];
+
+      const buildSite = require(buildPath);
+      await buildSite();
+
     } catch (buildError) {
-      return { success: false, error: `Build failed: ${buildError.message}` };
+      console.error('Build error:', buildError);
+      return { success: false, error: `Build failed: ${buildError.message}\n${buildError.stack || ''}` };
     }
-
-    // Step 3: Copy built website to handler's dist/website
-    mainWindow.webContents.send('publish-progress', { step: 'finalizing', message: 'Copying website files...' });
-
-    const mainProjectDist = path.join(MAIN_PROJECT_PATH, 'dist');
-    await fs.rm(OUTPUT_WEBSITE_DIR, { recursive: true, force: true });
-    await copyDirectory(mainProjectDist, OUTPUT_WEBSITE_DIR);
 
     mainWindow.webContents.send('publish-progress', { step: 'complete', message: 'Publish complete!' });
 
     return {
       success: true,
-      outputPath: OUTPUT_WEBSITE_DIR,
-      mainProjectDist: mainProjectDist
+      outputPath: OUTPUT_WEBSITE_DIR
     };
   } catch (error) {
     mainWindow.webContents.send('publish-progress', { step: 'error', message: error.message });

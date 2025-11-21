@@ -925,7 +925,7 @@ async function handlePublish() {
     publishLog.appendChild(entry);
     publishLog.scrollTop = publishLog.scrollHeight;
 
-    const confirmMsg = `Found changes:\n${changeSummary.join(', ')}\n\nThis will:\n1. Copy updated content to the main project\n2. Rebuild the website\n3. Save output to dist/website\n\nProceed with publish?`;
+    const confirmMsg = `Found changes:\n${changeSummary.join(', ')}\n\nThis will:\n1. Build the website from your content\n2. Generate HTML/CSS files in dist/website\n\nProceed with publish?`;
 
     if (!confirm(confirmMsg)) {
       addPublishLogEntry('Publish cancelled by user', 'info');

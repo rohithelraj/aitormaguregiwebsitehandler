@@ -25,7 +25,14 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.937.0",
-    "@aws-sdk/lib-storage": "^3.937.0"
+    "@aws-sdk/lib-storage": "^3.937.0",
+    "@babel/core": "^7.24.0",
+    "@babel/preset-env": "^7.24.0",
+    "@babel/preset-react": "^7.23.3",
+    "@babel/register": "^7.23.7",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "lucide-react": "^0.263.1"
   },
   "build": {
     "appId": "com.aitormaguregi.contentmanager",
@@ -52,6 +59,23 @@
       {
         "from": "s3-config.json",
         "to": "s3-config.json"
+      },
+      {
+        "from": "build.js",
+        "to": "build.js"
+      },
+      {
+        "from": "babel.config.js",
+        "to": "babel.config.js"
+      },
+      {
+        "from": "website-styles.css",
+        "to": "website-styles.css"
+      },
+      {
+        "from": "src",
+        "to": "src",
+        "filter": ["**/*"]
       }
     ],
     "win": {

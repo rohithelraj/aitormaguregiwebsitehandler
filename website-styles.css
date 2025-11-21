@@ -1,0 +1,768 @@
+/* Base styles */
+body {
+    margin: 0;
+    padding: 0;
+    background: black;
+    color: white;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+html {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.page-container {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+/* Navigation */
+.main-nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 2rem 2rem 2rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+}
+
+/* Hamburger Menu */
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 32px;
+    z-index: 101;
+}
+
+.hamburger-menu span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.hamburger-menu.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger-menu.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-menu.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+
+.logo h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 300;
+}
+
+.logo h2 {
+    margin: 0;
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: #888;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    margin-left: 2rem;
+    transition: color 0.3s ease;
+    padding-right: 3rem;
+}
+
+.nav-links a:hover {
+    color: #FFD700;
+}
+
+/* Dropdown styles */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    min-width: 200px;
+    z-index: 200;
+    margin-top: 0;
+    padding-top: 1rem;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 12px 16px;
+    color: white;
+    text-decoration: none;
+    border: 1px solid white;
+    border-bottom: none;
+    margin: 0;
+    transition: all 0.3s ease;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.dropdown-content a:last-child {
+    border-bottom: 1px solid white;
+}
+
+.dropdown-content a:hover {
+    color: #FFD700;
+    background: rgba(255, 215, 0, 0.1);
+}
+
+/* Reel page styles */
+.reel-content {
+    background: black;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+.reel-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 800px;
+    width: 100%;
+}
+
+.reel-title {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.video-wrapper {
+    width: 100%;
+    max-width: 800px;
+}
+
+.reel-video {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* Main content */
+.main-content {
+    flex: 1;
+    position: relative;
+}
+
+.image-container {
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+/* Navigation arrows */
+.nav-arrow {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+    z-index: 50;
+}
+
+.nav-arrow:hover {
+    opacity: 1;
+}
+
+.nav-arrow.left {
+    left: 2rem;
+}
+
+.nav-arrow.right {
+    right: 2rem;
+}
+
+/* Footer */
+.main-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 2rem 0rem 2rem 0rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+    padding-left: 2rem;
+}
+
+.social-icon {
+    color: white;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.social-icon:hover {
+    opacity: 1;
+}
+
+.copyright {
+    color: #888;
+    font-size: 0.8rem;
+    padding-right: 2rem;
+}
+
+/* Photography page styles */
+.photography-content {
+    background: black;
+    min-height: 100vh;
+    padding: 8rem 2rem 2rem 2rem;
+    box-sizing: border-box;
+}
+
+/* Storyboard page styles */
+.storyboard-content {
+    background: black;
+    min-height: 100vh;
+    padding: 8rem 2rem 2rem 2rem;
+    box-sizing: border-box;
+}
+
+/* Photography detail page styles */
+.photography-detail-content {
+    background: black;
+    min-height: 100vh;
+    padding: 8rem 2rem 2rem 2rem;
+    box-sizing: border-box;
+}
+
+.photography-detail {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.detail-image-section {
+    width: 100%;
+    margin-bottom: 3rem;
+}
+
+.detail-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.detail-text-section {
+    color: white;
+    text-align: center;
+}
+
+.detail-title {
+    font-size: 2.5rem;
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+    color: white;
+}
+
+.detail-description {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.8);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Photo card link styling */
+.photo-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    height: 100%;
+}
+
+/* Storyboard card link styling */
+.storyboard-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    height: 100%;
+}
+
+/* Storyboard detail page styles */
+.storyboard-detail-content {
+    background: black;
+    min-height: 100vh;
+    padding: 8rem 2rem 2rem 2rem;
+    box-sizing: border-box;
+}
+
+.storyboard-detail {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.storyboard-header {
+    color: white;
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.storyboard-images {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+}
+
+.storyboard-image-item {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.storyboard-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.image-caption {
+    color: white;
+    text-align: center;
+    padding: 0 1rem;
+}
+
+.image-name {
+    font-size: 1.8rem;
+    font-weight: 300;
+    margin-bottom: 0.75rem;
+    color: white;
+}
+
+.image-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Allow scrolling on photography pages */
+.page-container:has(.photography-content),
+.page-container.scrollable-page {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100vh;
+}
+
+/* Make footer static (not fixed) on photography pages */
+.page-container:has(.photography-content) .main-footer,
+.page-container.scrollable-page .main-footer {
+    position: static;
+    margin-top: 0;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.breadcrumb-link {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.breadcrumb-link:hover {
+    color: #FFD700;
+}
+
+.breadcrumb-separator {
+    margin: 0 0.5rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.breadcrumb-current {
+    color: white;
+    font-weight: 500;
+}
+
+.page-title {
+    color: white;
+    font-size: 2.5rem;
+    font-weight: 300;
+    text-align: center;
+    margin-bottom: 3rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.photography-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto 3rem auto;
+}
+
+.photo-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.photo-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(255, 215, 0, 0.3);
+}
+
+.card-image {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.photo-card:hover .card-image img {
+    transform: scale(1.05);
+}
+
+.card-content {
+    padding: 1rem;
+}
+
+.card-content h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: white;
+}
+
+/* Storyboard grid styles */
+.storyboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto 3rem auto;
+}
+
+.storyboard-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.storyboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(255, 215, 0, 0.3);
+}
+
+.storyboard-card .card-image {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+}
+
+.storyboard-card .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.storyboard-card:hover .card-image img {
+    transform: scale(1.05);
+}
+
+.storyboard-card .card-content {
+    padding: 1rem;
+}
+
+.storyboard-card .card-content h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: white;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 3rem 0;
+}
+
+.page-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.page-btn:hover:not(.disabled):not(.active) {
+    background: rgba(255, 215, 0, 0.2);
+    border-color: #FFD700;
+    color: #FFD700;
+}
+
+.page-btn.active {
+    background: #FFD700;
+    color: black;
+    border-color: #FFD700;
+    font-weight: 600;
+}
+
+.page-btn.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-nav {
+        padding: 1rem;
+    }
+
+    .hamburger-menu {
+        display: flex;
+        order: 3;
+        margin-left: auto;
+    }
+
+    .logo {
+        order: 1;
+    }
+
+    .nav-links {
+        display: none;
+        position: fixed;
+        top: 80px;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.95);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        padding: 0rem;
+        gap: 1.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        order: 4;
+        width: 100%;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links > a {
+        margin: 0;
+        padding: 0.5rem 0;
+        text-align: center;
+        font-size: 1.2rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-links > a:last-child {
+        border-bottom: none;
+    }
+
+    /* Show dropdown items instead of WORK on mobile */
+    .dropdown {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    .dropdown > a {
+        display: none;
+    }
+
+    .dropdown-content {
+        display: flex !important;
+        position: relative;
+        flex-direction: column;
+        background: transparent;
+        min-width: auto;
+        padding: 0;
+        margin: 0;
+        border-radius: 0;
+        backdrop-filter: none;
+    }
+
+    .dropdown-content a {
+        margin: 0;
+        padding: 0.5rem 0;
+        text-align: center;
+        font-size: 1.1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        background: transparent;
+        border-left: none;
+        border-right: none;
+        border-top: none;
+    }
+
+    .main-footer {
+        padding: 0.5rem 1rem;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .nav-arrow {
+        font-size: 1.5rem;
+    }
+
+    .nav-arrow.left {
+        left: 0.5rem;
+    }
+
+    .nav-arrow.right {
+        right: 0.5rem;
+    }
+
+    .logo h1 {
+        font-size: 1.2rem;
+    }
+
+    .logo h2 {
+        font-size: 0.7rem;
+    }
+
+    .photography-content {
+        padding: 6rem 1rem 1rem 1rem;
+    }
+
+    .storyboard-content {
+        padding: 6rem 1rem 1rem 1rem;
+    }
+
+    .photography-detail-content {
+        padding: 6rem 1rem 1rem 1rem;
+    }
+
+    .photography-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .storyboard-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .detail-title {
+        font-size: 2rem;
+    }
+
+    .detail-description {
+        font-size: 1rem;
+    }
+
+    .page-title {
+        font-size: 2rem;
+    }
+
+    /* Hide "Home /" on mobile, show only "Photography" */
+    .breadcrumb-home {
+        display: none;
+    }
+
+    .card-image {
+        height: 200px;
+    }
+
+    .pagination {
+        gap: 0.25rem;
+        flex-wrap: wrap;
+    }
+
+    .page-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .social-links {
+        gap: 0.5rem;
+    }
+    
+    .social-icon {
+        transform: scale(0.8);
+    }
+}
+```
