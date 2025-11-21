@@ -5,6 +5,9 @@ All notable changes to the Aitor Content Manager will be documented in this file
 ## [Unreleased]
 
 ### Added
+- **Undo deletions** - Revert file or item deletions within 10 seconds
+- **Deletion history** - Keeps last 10 deletions in memory for undo
+- **Undo button in toast** - Click "Undo" button that appears after any deletion
 - **Create new JSON files** - Add new files for home, photography, and storyboard categories
 - **Delete JSON files** - Remove unwanted files with confirmation
 - **Add array items** - Create new items in photography_thumbs.json and storyboard_thumbs.json
@@ -39,6 +42,12 @@ All notable changes to the Aitor Content Manager will be documented in this file
 - Reduced initial load time for files with many images (like photography_thumbs.json)
 - Browser no longer tries to load all images simultaneously
 - Memory usage reduced when viewing large image collections
+
+### Safety
+- All deletions can be undone within 10 seconds
+- File content backed up before deletion
+- Array items restored at original position when undone
+- 10-deletion history buffer prevents accidental data loss
 
 ## [1.0.0] - 2024-11-21
 

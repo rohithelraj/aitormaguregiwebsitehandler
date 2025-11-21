@@ -3,6 +3,10 @@ let allJsonFiles = [];
 let currentJsonData = null;
 let isFormView = true;
 
+// Deletion history for undo functionality
+let deletionHistory = [];
+let currentToastTimeout = null;
+
 // DOM Elements
 const fileList = document.getElementById('fileList');
 const emptyState = document.getElementById('emptyState');
@@ -792,16 +796,53 @@ async function showAllS3Urls() {
   }
 }
 
-function showToast(message, type = 'success') {
-  toast.textContent = message;
-  toast.className = 'toast show';
-  if (type === 'error') {
-    toast.classList.add('error');
+function showToast(message, type = 'success', action = null) {
+  // Clear any existing toast timeout
+  if (currentToastTimeout) {
+    clearTimeout(currentToastTimeout);
   }
 
-  setTimeout(() => {
-    toast.classList.remove('show');
-  }, 3000);
+  // Clear toast content
+  toast.innerHTML = '';
+  toast.className = 'toast show';
+
+  if (type === 'error') {
+    toast.classList.add('error');
+  } else if (type === 'warning') {
+    toast.classList.add('warning');
+  }
+
+  // Add message
+  const messageSpan = document.createElement('span');
+  messageSpan.className = 'toast-message';
+  messageSpan.textContent = message;
+  toast.appendChild(messageSpan);
+
+  // Add action button if provided
+  if (action) {
+    const actionBtn = document.createElement('button');
+    actionBtn.className = 'toast-action';
+    actionBtn.textContent = action.text;
+    actionBtn.onclick = () => {
+      action.callback();
+      hideToast();
+    };
+    toast.appendChild(actionBtn);
+  }
+
+  // Auto-hide toast (longer timeout if action button present)
+  const timeout = action ? 10000 : 3000;
+  currentToastTimeout = setTimeout(() => {
+    hideToast();
+  }, timeout);
+}
+
+function hideToast() {
+  toast.classList.remove('show');
+  if (currentToastTimeout) {
+    clearTimeout(currentToastTimeout);
+    currentToastTimeout = null;
+  }
 }
 
 // File Management Functions
@@ -866,13 +907,39 @@ async function handleDeleteFile(filePath, category) {
     return;
   }
 
+  // Read file content before deleting (for undo)
+  const readResult = await window.electronAPI.readJsonFile(filePath);
+  if (!readResult.success) {
+    showToast('Failed to read file before deletion', 'error');
+    return;
+  }
+
+  const fileContent = readResult.rawContent;
+  const wasCurrentFile = currentFilePath === filePath;
+
+  // Delete the file
   const result = await window.electronAPI.deleteJsonFile(filePath);
 
   if (result.success) {
-    showToast(`Deleted ${fileName}`);
+    // Save deletion to history
+    const deletion = {
+      type: 'file',
+      filePath,
+      fileName,
+      category,
+      content: fileContent,
+      wasCurrentFile,
+      timestamp: Date.now()
+    };
+    deletionHistory.push(deletion);
+
+    // Keep only last 10 deletions
+    if (deletionHistory.length > 10) {
+      deletionHistory.shift();
+    }
 
     // If this was the currently open file, clear the editor
-    if (currentFilePath === filePath) {
+    if (wasCurrentFile) {
       currentFilePath = null;
       editorContainer.style.display = 'none';
       emptyState.style.display = 'flex';
@@ -880,8 +947,41 @@ async function handleDeleteFile(filePath, category) {
 
     // Refresh file list
     await loadJsonFiles();
+
+    // Show toast with undo option
+    showToast(`Deleted ${fileName}`, 'warning', {
+      text: 'Undo',
+      callback: () => undoFileDeletion(deletion)
+    });
   } else {
     showToast(`Failed to delete file: ${result.error}`, 'error');
+  }
+}
+
+async function undoFileDeletion(deletion) {
+  showToast('Restoring file...', 'success');
+
+  // Re-create the file
+  const result = await window.electronAPI.writeJsonFile(deletion.filePath, deletion.content);
+
+  if (result.success) {
+    showToast(`Restored ${deletion.fileName}`);
+
+    // Remove from deletion history
+    const index = deletionHistory.indexOf(deletion);
+    if (index > -1) {
+      deletionHistory.splice(index, 1);
+    }
+
+    // Refresh file list
+    await loadJsonFiles();
+
+    // Reload the file if it was currently open
+    if (deletion.wasCurrentFile) {
+      loadFile(deletion.filePath);
+    }
+  } else {
+    showToast(`Failed to restore file: ${result.error}`, 'error');
   }
 }
 
@@ -924,13 +1024,62 @@ function handleDeleteArrayItem(path, index, itemTitle) {
   // Get the current data
   const data = collectFormData();
 
+  // Save the item before deleting (for undo)
+  let deletedItem = null;
+  if (Array.isArray(data) && index < data.length) {
+    deletedItem = JSON.parse(JSON.stringify(data[index])); // Deep clone
+  }
+
   // Remove the item from the array
   if (Array.isArray(data)) {
     data.splice(index, 1);
   }
 
+  // Save deletion to history
+  const deletion = {
+    type: 'arrayItem',
+    filePath: currentFilePath,
+    index,
+    item: deletedItem,
+    itemTitle,
+    timestamp: Date.now()
+  };
+  deletionHistory.push(deletion);
+
+  // Keep only last 10 deletions
+  if (deletionHistory.length > 10) {
+    deletionHistory.shift();
+  }
+
   // Update the current data and re-render
   currentJsonData = data;
   renderFormView(data);
-  showToast('Item deleted - remember to save!');
+
+  // Show toast with undo option
+  showToast(`Deleted "${itemTitle}" - remember to save!`, 'warning', {
+    text: 'Undo',
+    callback: () => undoArrayItemDeletion(deletion)
+  });
+}
+
+function undoArrayItemDeletion(deletion) {
+  // Get current data
+  const data = collectFormData();
+
+  // Re-insert the item at its original position
+  if (Array.isArray(data) && deletion.item) {
+    data.splice(deletion.index, 0, deletion.item);
+  }
+
+  // Remove from deletion history
+  const historyIndex = deletionHistory.indexOf(deletion);
+  if (historyIndex > -1) {
+    deletionHistory.splice(historyIndex, 1);
+  }
+
+  // Update the current data and re-render
+  currentJsonData = data;
+  renderFormView(data);
+
+  showToast(`Restored "${deletion.itemTitle}" - remember to save!`);
 }

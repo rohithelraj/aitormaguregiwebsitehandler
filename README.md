@@ -6,6 +6,7 @@ An Electron desktop application for managing JSON content files and S3 bucket UR
 
 - **Browse JSON Files**: View all JSON files from the content directory organized by category with collapsible accordion sections
 - **Create/Delete Files**: Add new JSON files for home, photography, and storyboard categories
+- **Undo Deletions**: Revert any file or item deletion within 10 seconds with one click
 - **Manage Array Items**: Add and delete items in photography_thumbs.json and storyboard_thumbs.json
 - **Form-Based Editing**: Edit JSON content through intuitive form fields with proper labels
 - **Image Thumbnails**: Automatically displays image previews for S3 URLs and image fields
@@ -123,8 +124,13 @@ npm start
 2. Click the **×** button that appears
 3. Confirm deletion
 4. The file and its folder (if applicable) are removed
+5. **UNDO available**: Click the **"Undo"** button in the toast notification within 10 seconds to restore
 
-**Note:** Thumbs files (photography_thumbs.json, storyboard_thumbs.json) cannot be deleted.
+**Safety Features:**
+- Thumbs files (photography_thumbs.json, storyboard_thumbs.json) cannot be deleted
+- All deletions show an **Undo button** for 10 seconds
+- Last 10 deletions are kept in memory for undo
+- File content is backed up before deletion
 
 ### Managing Array Items
 
@@ -142,7 +148,13 @@ npm start
 2. Expand its accordion
 3. Click **Delete** button in the header
 4. Confirm deletion
-5. Click **Save Changes**
+5. **UNDO available**: Click the **"Undo"** button in the toast notification within 10 seconds
+6. Click **Save Changes** to persist
+
+**Safety Features:**
+- **Undo button** appears for 10 seconds after deletion
+- Item is restored at its original position when undone
+- Must save the file to make deletion permanent
 
 ### Uploading Images
 
