@@ -15,5 +15,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
   s3IsConfigured: () => ipcRenderer.invoke('s3-is-configured'),
   selectImageFile: () => ipcRenderer.invoke('select-image-file'),
   uploadToS3: (filePath, s3Key) => ipcRenderer.invoke('upload-to-s3', filePath, s3Key),
+  deleteFromS3: (s3Url) => ipcRenderer.invoke('delete-from-s3', s3Url),
   onUploadProgress: (callback) => ipcRenderer.on('upload-progress', (event, data) => callback(data)),
 });

@@ -1,7 +1,7 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs').promises;
-const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const { Upload } = require('@aws-sdk/lib-storage');
 
 // Determine correct path for content directory (inside or outside asar)
@@ -331,6 +331,38 @@ ipcMain.handle('upload-to-s3', async (event, filePath, s3Key) => {
     const s3Url = `https://${s3Config.bucket}.s3.${s3Config.region}.amazonaws.com/${s3Key}`;
 
     return { success: true, url: s3Url };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+});
+
+// Delete file from S3
+ipcMain.handle('delete-from-s3', async (event, s3Url) => {
+  try {
+    if (!s3Client) {
+      return { success: false, error: 'S3 not configured. Please add credentials to s3-config.json' };
+    }
+
+    // Extract S3 key from URL
+    // URL format: https://bucket.s3.region.amazonaws.com/key/path/file.jpg
+    const urlPattern = new RegExp(`https://${s3Config.bucket}\\.s3[^/]*\\.amazonaws\\.com/(.+)`);
+    const match = s3Url.match(urlPattern);
+
+    if (!match) {
+      return { success: false, error: 'Invalid S3 URL format' };
+    }
+
+    const s3Key = decodeURIComponent(match[1]);
+
+    // Delete from S3
+    const command = new DeleteObjectCommand({
+      Bucket: s3Config.bucket,
+      Key: s3Key
+    });
+
+    await s3Client.send(command);
+
+    return { success: true };
   } catch (error) {
     return { success: false, error: error.message };
   }

@@ -25,11 +25,12 @@ This guide will help you create a dedicated IAM user with minimal permissions fo
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "AllowS3Upload",
+      "Sid": "AllowS3UploadAndDelete",
       "Effect": "Allow",
       "Action": [
         "s3:PutObject",
-        "s3:PutObjectAcl"
+        "s3:PutObjectAcl",
+        "s3:DeleteObject"
       ],
       "Resource": "arn:aws:s3:::aitormaguregiportfolioresources/*"
     },
@@ -46,12 +47,12 @@ This guide will help you create a dedicated IAM user with minimal permissions fo
 ```
 
 5. Click **Next**
-6. Enter policy name: `AitorContentManagerS3Upload`
-7. Enter description: `Allows upload to aitormaguregiportfolioresources S3 bucket`
+6. Enter policy name: `AitorContentManagerS3Access`
+7. Enter description: `Allows upload and delete operations for aitormaguregiportfolioresources S3 bucket`
 8. Click **Create policy**
 9. Go back to the user creation tab
 10. Click refresh button on the policies list
-11. Search for `AitorContentManagerS3Upload`
+11. Search for `AitorContentManagerS3Access`
 12. Check the box next to it
 13. Click **Next**
 

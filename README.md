@@ -52,6 +52,7 @@ To enable image uploads to S3, you need to configure your AWS credentials.
 Your IAM user needs these S3 permissions:
 - `s3:PutObject` - Upload files
 - `s3:PutObjectAcl` - Set public-read ACL
+- `s3:DeleteObject` - Delete files from S3 when deleting content
 - `s3:ListBucket` - List bucket contents (optional)
 
 **📚 Full AWS setup instructions: [AWS_SETUP.md](./AWS_SETUP.md)**
@@ -123,14 +124,16 @@ npm start
 1. Hover over any file in home, photography, or storyboard
 2. Click the **×** button that appears
 3. Confirm deletion
-4. The file and its folder (if applicable) are removed
-5. **UNDO available**: Click the **"Undo"** button in the toast notification within 10 seconds to restore
+4. **S3 Cleanup (Optional)**: If the file contains S3 images, you'll be asked if you want to delete them from S3 as well
+5. The file and its folder (if applicable) are removed
+6. **UNDO available**: Click the **"Undo"** button in the toast notification within 10 seconds to restore
 
 **Safety Features:**
 - Thumbs files (photography_thumbs.json, storyboard_thumbs.json) cannot be deleted
 - All deletions show an **Undo button** for 10 seconds
 - Last 10 deletions are kept in memory for undo
 - File content is backed up before deletion
+- S3 deletion is optional - you choose whether to clean up S3 images
 
 ### Managing Array Items
 
@@ -148,13 +151,15 @@ npm start
 2. Expand its accordion
 3. Click **Delete** button in the header
 4. Confirm deletion
-5. **UNDO available**: Click the **"Undo"** button in the toast notification within 10 seconds
-6. Click **Save Changes** to persist
+5. **S3 Cleanup (Optional)**: If the item contains S3 images, you'll be asked if you want to delete them from S3 as well
+6. **UNDO available**: Click the **"Undo"** button in the toast notification within 10 seconds
+7. Click **Save Changes** to persist
 
 **Safety Features:**
 - **Undo button** appears for 10 seconds after deletion
 - Item is restored at its original position when undone
 - Must save the file to make deletion permanent
+- S3 deletion is optional - you choose whether to clean up S3 images
 
 ### Uploading Images
 
