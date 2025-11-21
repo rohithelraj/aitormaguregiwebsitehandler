@@ -17,4 +17,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   uploadToS3: (filePath, s3Key) => ipcRenderer.invoke('upload-to-s3', filePath, s3Key),
   deleteFromS3: (s3Url) => ipcRenderer.invoke('delete-from-s3', s3Url),
   onUploadProgress: (callback) => ipcRenderer.on('upload-progress', (event, data) => callback(data)),
+
+  // Publish operations
+  checkContentChanges: () => ipcRenderer.invoke('check-content-changes'),
+  publishWebsite: () => ipcRenderer.invoke('publish-website'),
+  onPublishProgress: (callback) => ipcRenderer.on('publish-progress', (event, data) => callback(data)),
 });

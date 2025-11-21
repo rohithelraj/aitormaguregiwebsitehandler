@@ -18,9 +18,13 @@ const refreshBtn = document.getElementById('refreshBtn');
 const saveBtn = document.getElementById('saveBtn');
 const toggleViewBtn = document.getElementById('toggleViewBtn');
 const findUrlsBtn = document.getElementById('findUrlsBtn');
+const publishBtn = document.getElementById('publishBtn');
 const modal = document.getElementById('modal');
 const closeModal = document.querySelector('.close');
 const allUrlsContent = document.getElementById('allUrlsContent');
+const publishModal = document.getElementById('publishModal');
+const closePublishModal = document.querySelector('.close-publish');
+const publishLog = document.getElementById('publishLog');
 const toast = document.getElementById('toast');
 
 // Initialize
@@ -31,9 +35,28 @@ refreshBtn.addEventListener('click', loadJsonFiles);
 saveBtn.addEventListener('click', saveCurrentFile);
 toggleViewBtn.addEventListener('click', toggleView);
 findUrlsBtn.addEventListener('click', showAllS3Urls);
+publishBtn.addEventListener('click', handlePublish);
 closeModal.addEventListener('click', () => modal.style.display = 'none');
+closePublishModal.addEventListener('click', () => publishModal.style.display = 'none');
 window.addEventListener('click', (e) => {
   if (e.target === modal) modal.style.display = 'none';
+  if (e.target === publishModal) publishModal.style.display = 'none';
+});
+
+// Listen for publish progress updates
+window.electronAPI.onPublishProgress((data) => {
+  if (data.step === 'complete') {
+    addPublishLogEntry('✓ Publish Complete', 'success', 'Website has been built and is ready in dist/website');
+    publishBtn.disabled = false;
+    publishBtn.textContent = 'Publish';
+  } else if (data.step === 'error') {
+    addPublishLogEntry('✗ Error', 'error', data.message);
+    publishBtn.disabled = false;
+    publishBtn.textContent = 'Publish';
+  } else {
+    addPublishLogEntry(data.message, 'step');
+    publishBtn.textContent = data.message;
+  }
 });
 
 // Keyboard shortcuts
@@ -793,6 +816,141 @@ async function showAllS3Urls() {
     });
   } else {
     allUrlsContent.innerHTML = `<p style="color: #f48771;">Error: ${result.error}</p>`;
+  }
+}
+
+function addPublishLogEntry(message, type = 'info', details = null) {
+  const entry = document.createElement('div');
+  entry.className = `publish-log-entry ${type}`;
+
+  const timestamp = document.createElement('div');
+  timestamp.className = 'publish-log-timestamp';
+  timestamp.textContent = new Date().toLocaleTimeString();
+  entry.appendChild(timestamp);
+
+  const messageDiv = document.createElement('div');
+  messageDiv.className = 'publish-log-message';
+  messageDiv.textContent = message;
+  entry.appendChild(messageDiv);
+
+  if (details) {
+    const detailsDiv = document.createElement('div');
+    detailsDiv.className = 'publish-log-details';
+    detailsDiv.textContent = details;
+    entry.appendChild(detailsDiv);
+  }
+
+  publishLog.appendChild(entry);
+  // Auto-scroll to bottom
+  publishLog.scrollTop = publishLog.scrollHeight;
+}
+
+async function handlePublish() {
+  // Clear previous log and show modal
+  publishLog.innerHTML = '';
+  publishModal.style.display = 'block';
+
+  // Disable button during publish
+  publishBtn.disabled = true;
+  publishBtn.textContent = 'Checking for changes...';
+
+  addPublishLogEntry('Starting publish process...', 'info');
+
+  try {
+    // Check if there are changes
+    addPublishLogEntry('Checking for content changes...', 'step');
+    const checkResult = await window.electronAPI.checkContentChanges();
+
+    if (!checkResult.success) {
+      addPublishLogEntry('Failed to check changes', 'error', checkResult.error);
+      showToast(`Error checking changes: ${checkResult.error}`, 'error');
+      publishBtn.disabled = false;
+      publishBtn.textContent = 'Publish';
+      return;
+    }
+
+    if (!checkResult.hasChanges) {
+      addPublishLogEntry('No changes detected', 'info', 'Content is up to date with the main project');
+      showToast('No changes detected. Website is up to date.', 'success');
+      publishBtn.disabled = false;
+      publishBtn.textContent = 'Publish';
+      return;
+    }
+
+    // Show changes summary in log
+    const changeTypes = {
+      new: checkResult.changes.filter(c => c.type === 'new').length,
+      modified: checkResult.changes.filter(c => c.type === 'modified').length,
+      deleted: checkResult.changes.filter(c => c.type === 'deleted').length
+    };
+
+    const changeSummary = [];
+    if (changeTypes.new > 0) changeSummary.push(`${changeTypes.new} new`);
+    if (changeTypes.modified > 0) changeSummary.push(`${changeTypes.modified} modified`);
+    if (changeTypes.deleted > 0) changeSummary.push(`${changeTypes.deleted} deleted`);
+
+    // Create detailed change list for log
+    const changeListHTML = document.createElement('div');
+    changeListHTML.className = 'publish-log-details';
+    const changeList = document.createElement('ul');
+    changeList.className = 'publish-changes-list';
+
+    checkResult.changes.slice(0, 10).forEach(change => {
+      const li = document.createElement('li');
+      li.className = `change-${change.type}`;
+      li.textContent = `[${change.type.toUpperCase()}] ${change.path}`;
+      changeList.appendChild(li);
+    });
+
+    if (checkResult.changes.length > 10) {
+      const li = document.createElement('li');
+      li.textContent = `... and ${checkResult.changes.length - 10} more changes`;
+      changeList.appendChild(li);
+    }
+
+    const entry = document.createElement('div');
+    entry.className = 'publish-log-entry info';
+
+    const timestamp = document.createElement('div');
+    timestamp.className = 'publish-log-timestamp';
+    timestamp.textContent = new Date().toLocaleTimeString();
+    entry.appendChild(timestamp);
+
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'publish-log-message';
+    messageDiv.textContent = `Found ${checkResult.changes.length} change(s): ${changeSummary.join(', ')}`;
+    entry.appendChild(messageDiv);
+
+    entry.appendChild(changeList);
+    publishLog.appendChild(entry);
+    publishLog.scrollTop = publishLog.scrollHeight;
+
+    const confirmMsg = `Found changes:\n${changeSummary.join(', ')}\n\nThis will:\n1. Copy updated content to the main project\n2. Rebuild the website\n3. Save output to dist/website\n\nProceed with publish?`;
+
+    if (!confirm(confirmMsg)) {
+      addPublishLogEntry('Publish cancelled by user', 'info');
+      publishBtn.disabled = false;
+      publishBtn.textContent = 'Publish';
+      return;
+    }
+
+    // Start publish process
+    addPublishLogEntry('User confirmed - starting publish...', 'step');
+    publishBtn.textContent = 'Publishing...';
+    const result = await window.electronAPI.publishWebsite();
+
+    if (result.success) {
+      showToast(`Website published successfully! Output: ${result.outputPath}`, 'success');
+    } else {
+      showToast(`Publish failed: ${result.error}`, 'error');
+    }
+
+  } catch (error) {
+    addPublishLogEntry('Unexpected error', 'error', error.message);
+    showToast(`Unexpected error: ${error.message}`, 'error');
+  } finally {
+    publishBtn.disabled = false;
+    publishBtn.textContent = 'Publish';
   }
 }
 

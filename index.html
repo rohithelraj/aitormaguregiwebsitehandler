@@ -13,6 +13,7 @@
       <div class="header-actions">
         <button id="refreshBtn" class="btn">Refresh Files</button>
         <button id="findUrlsBtn" class="btn">Find All S3 URLs</button>
+        <button id="publishBtn" class="btn btn-publish">Publish</button>
       </div>
     </header>
 
@@ -51,6 +52,14 @@
         <span class="close">&times;</span>
         <h2>All S3 URLs</h2>
         <div id="allUrlsContent"></div>
+      </div>
+    </div>
+
+    <div id="publishModal" class="modal">
+      <div class="modal-content">
+        <span class="close-publish">&times;</span>
+        <h2>Publish Progress</h2>
+        <div id="publishLog" class="publish-log"></div>
       </div>
     </div>
 

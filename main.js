@@ -1,6 +1,8 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs').promises;
+const fsSync = require('fs');
+const { execSync } = require('child_process');
 const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const { Upload } = require('@aws-sdk/lib-storage');
 
@@ -364,6 +366,156 @@ ipcMain.handle('delete-from-s3', async (event, s3Url) => {
 
     return { success: true };
   } catch (error) {
+    return { success: false, error: error.message };
+  }
+});
+
+// Publish Handlers
+
+const MAIN_PROJECT_PATH = '/Users/ro.raju/private/aitormaguregidigitalvisualartist';
+const MAIN_PROJECT_CONTENT = path.join(MAIN_PROJECT_PATH, 'content');
+const OUTPUT_WEBSITE_DIR = app.isPackaged
+  ? path.join(process.resourcesPath, 'dist', 'website')
+  : path.join(__dirname, 'dist', 'website');
+
+// Helper: Compare two JSON files
+async function compareJsonFiles(file1, file2) {
+  try {
+    const content1 = await fs.readFile(file1, 'utf8');
+    const content2 = await fs.readFile(file2, 'utf8');
+    return content1 !== content2;
+  } catch (error) {
+    // If one file doesn't exist, they're different
+    return true;
+  }
+}
+
+// Helper: Recursively compare directories
+async function compareDirectories(dir1, dir2) {
+  const changes = [];
+
+  try {
+    // Get all files from source directory
+    const files1 = await getAllFiles(dir1);
+    const files2 = await getAllFiles(dir2);
+
+    // Check for new or modified files
+    for (const file of files1) {
+      const relativePath = path.relative(dir1, file);
+      const file2Path = path.join(dir2, relativePath);
+
+      if (!files2.find(f => path.relative(dir2, f) === relativePath)) {
+        changes.push({ type: 'new', path: relativePath });
+      } else if (await compareJsonFiles(file, file2Path)) {
+        changes.push({ type: 'modified', path: relativePath });
+      }
+    }
+
+    // Check for deleted files
+    for (const file of files2) {
+      const relativePath = path.relative(dir2, file);
+      if (!files1.find(f => path.relative(dir1, f) === relativePath)) {
+        changes.push({ type: 'deleted', path: relativePath });
+      }
+    }
+
+    return changes;
+  } catch (error) {
+    console.error('Error comparing directories:', error);
+    return [];
+  }
+}
+
+// Helper: Get all files recursively
+async function getAllFiles(dir) {
+  const files = [];
+
+  try {
+    const entries = await fs.readdir(dir, { withFileTypes: true });
+
+    for (const entry of entries) {
+      const fullPath = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        files.push(...await getAllFiles(fullPath));
+      } else {
+        files.push(fullPath);
+      }
+    }
+  } catch (error) {
+    console.error(`Error reading directory ${dir}:`, error);
+  }
+
+  return files;
+}
+
+// Helper: Copy directory recursively
+async function copyDirectory(src, dest) {
+  await fs.mkdir(dest, { recursive: true });
+
+  const entries = await fs.readdir(src, { withFileTypes: true });
+
+  for (const entry of entries) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+
+    if (entry.isDirectory()) {
+      await copyDirectory(srcPath, destPath);
+    } else {
+      await fs.copyFile(srcPath, destPath);
+    }
+  }
+}
+
+// Check for changes between handler and main project
+ipcMain.handle('check-content-changes', async () => {
+  try {
+    const changes = await compareDirectories(CONTENT_DIR, MAIN_PROJECT_CONTENT);
+    return { success: true, hasChanges: changes.length > 0, changes };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+});
+
+// Publish: Copy content and rebuild website
+ipcMain.handle('publish-website', async (event) => {
+  try {
+    // Step 1: Copy content from handler to main project
+    mainWindow.webContents.send('publish-progress', { step: 'copying', message: 'Copying content files...' });
+
+    // Remove old content
+    await fs.rm(MAIN_PROJECT_CONTENT, { recursive: true, force: true });
+    // Copy new content
+    await copyDirectory(CONTENT_DIR, MAIN_PROJECT_CONTENT);
+
+    // Step 2: Run build script in main project
+    mainWindow.webContents.send('publish-progress', { step: 'building', message: 'Building website...' });
+
+    try {
+      execSync('node build.js', {
+        cwd: MAIN_PROJECT_PATH,
+        stdio: 'pipe',
+        encoding: 'utf8'
+      });
+    } catch (buildError) {
+      return { success: false, error: `Build failed: ${buildError.message}` };
+    }
+
+    // Step 3: Copy built website to handler's dist/website
+    mainWindow.webContents.send('publish-progress', { step: 'finalizing', message: 'Copying website files...' });
+
+    const mainProjectDist = path.join(MAIN_PROJECT_PATH, 'dist');
+    await fs.rm(OUTPUT_WEBSITE_DIR, { recursive: true, force: true });
+    await copyDirectory(mainProjectDist, OUTPUT_WEBSITE_DIR);
+
+    mainWindow.webContents.send('publish-progress', { step: 'complete', message: 'Publish complete!' });
+
+    return {
+      success: true,
+      outputPath: OUTPUT_WEBSITE_DIR,
+      mainProjectDist: mainProjectDist
+    };
+  } catch (error) {
+    mainWindow.webContents.send('publish-progress', { step: 'error', message: error.message });
     return { success: false, error: error.message };
   }
 });

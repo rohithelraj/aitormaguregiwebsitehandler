@@ -599,6 +599,21 @@ header h1 {
   background-color: #1177bb;
 }
 
+.btn-publish {
+  background-color: #28a745;
+  font-weight: 600;
+}
+
+.btn-publish:hover {
+  background-color: #34ce57;
+}
+
+.btn-publish:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 .loading {
   padding: 1rem;
   text-align: center;
@@ -641,6 +656,95 @@ header h1 {
 .close:hover,
 .close:focus {
   color: #fff;
+}
+
+.close-publish {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  line-height: 20px;
+}
+
+.close-publish:hover,
+.close-publish:focus {
+  color: #fff;
+}
+
+.publish-log {
+  background-color: #1e1e1e;
+  border-radius: 4px;
+  padding: 1rem;
+  font-family: monospace;
+  font-size: 0.85rem;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.publish-log-entry {
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  border-left: 3px solid #3e3e42;
+  background-color: #252526;
+  border-radius: 0 4px 4px 0;
+}
+
+.publish-log-entry.step {
+  border-left-color: #0e639c;
+}
+
+.publish-log-entry.success {
+  border-left-color: #28a745;
+  background-color: rgba(40, 167, 69, 0.1);
+}
+
+.publish-log-entry.error {
+  border-left-color: #f48771;
+  background-color: rgba(244, 135, 113, 0.1);
+}
+
+.publish-log-entry.info {
+  border-left-color: #4ec9b0;
+}
+
+.publish-log-timestamp {
+  color: #888;
+  font-size: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.publish-log-message {
+  color: #d4d4d4;
+}
+
+.publish-log-details {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #3e3e42;
+  color: #888;
+  font-size: 0.8rem;
+}
+
+.publish-changes-list {
+  list-style: none;
+  margin-top: 0.5rem;
+}
+
+.publish-changes-list li {
+  padding: 0.25rem 0;
+}
+
+.publish-changes-list .change-new {
+  color: #28a745;
+}
+
+.publish-changes-list .change-modified {
+  color: #ffa500;
+}
+
+.publish-changes-list .change-deleted {
+  color: #f48771;
 }
 
 .url-group {
