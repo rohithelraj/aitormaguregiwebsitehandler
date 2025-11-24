@@ -12,6 +12,43 @@ const MattePaintingPage = ({ content }) => {
 
   const hasToggle = content.mainImage && content.mainImageToggle;
 
+  // Helper function to convert YouTube URL to embed URL
+  const getYouTubeEmbedUrl = (url) => {
+    if (!url) return null;
+
+    // Check if it's already an embed URL
+    if (url.includes('/embed/')) {
+      return url;
+    }
+
+    // Extract video ID from various YouTube URL formats
+    let videoId = null;
+
+    // Format: https://www.youtube.com/watch?v=VIDEO_ID
+    const watchMatch = url.match(/[?&]v=([^&]+)/);
+    if (watchMatch) {
+      videoId = watchMatch[1];
+    }
+
+    // Format: https://youtu.be/VIDEO_ID
+    const shortMatch = url.match(/youtu\.be\/([^?&]+)/);
+    if (shortMatch) {
+      videoId = shortMatch[1];
+    }
+
+    // If we found a video ID, return embed URL
+    if (videoId) {
+      return `https://www.youtube.com/embed/${videoId}`;
+    }
+
+    // Not a YouTube URL, return original (for mp4 files, etc.)
+    return url;
+  };
+
+  const isYouTubeUrl = (url) => {
+    return url && (url.includes('youtube.com') || url.includes('youtu.be'));
+  };
+
   return React.createElement('div', { className: 'page-container scrollable-page' },
     React.createElement(Navigation),
     React.createElement('main', { className: 'matte-painting-detail-content' },
@@ -82,13 +119,23 @@ const MattePaintingPage = ({ content }) => {
         // Video section
         content.videoUrl && React.createElement('div', { className: 'video-section' },
           React.createElement('h2', { className: 'video-title' }, 'Video'),
-          React.createElement('video', {
-            controls: true,
-            className: 'detail-video'
-          },
-            React.createElement('source', { src: content.videoUrl, type: 'video/mp4' }),
-            'Your browser does not support the video tag.'
-          ),
+          isYouTubeUrl(content.videoUrl)
+            ? React.createElement('div', { className: 'video-wrapper' },
+                React.createElement('iframe', {
+                  src: getYouTubeEmbedUrl(content.videoUrl),
+                  className: 'detail-video youtube-video',
+                  frameBorder: '0',
+                  allow: 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture',
+                  allowFullScreen: true
+                })
+              )
+            : React.createElement('video', {
+                controls: true,
+                className: 'detail-video'
+              },
+                React.createElement('source', { src: content.videoUrl, type: 'video/mp4' }),
+                'Your browser does not support the video tag.'
+              ),
           content.videoDescription && React.createElement('p', { className: 'video-description' }, content.videoDescription)
         )
       )
