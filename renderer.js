@@ -331,9 +331,12 @@ function renderObjectFields(container, obj, path) {
 }
 
 function renderTextField(container, path, value) {
+  // Check if field name contains "description" (case-insensitive)
+  const lowerPath = path.toLowerCase();
+  const isDescriptionField = lowerPath.includes('description') || lowerPath.includes('bio') || lowerPath.includes('projects');
   const isLongText = value.length > 50;
 
-  if (isLongText) {
+  if (isLongText || isDescriptionField) {
     const textarea = document.createElement('textarea');
     textarea.className = 'form-textarea';
     textarea.value = value;
@@ -590,12 +593,34 @@ function loadArrayItemContent(container, item, itemPath) {
 function isImageUrl(value, fieldPath = '') {
   if (typeof value !== 'string') return false;
 
-  // Check field path/name for image-related keywords
-  const lowerPath = fieldPath.toLowerCase();
-  const imageFieldKeywords = ['photo', 'image', 'thumbnail', 'icon', 'thumburl', 'mainimage'];
-  const isImageField = imageFieldKeywords.some(keyword => lowerPath.includes(keyword));
+  // Get the last part of the path (the actual field name)
+  const fieldName = fieldPath.split('.').pop().toLowerCase();
 
-  // If field name suggests it's an image field, treat it as image
+  // Exclude fields that are clearly not image URLs
+  const excludePatterns = ['name', 'title', 'description', 'tag', 'role', 'position', 'company', 'year', 'projects'];
+  if (excludePatterns.some(pattern => fieldName === pattern || fieldName.endsWith(pattern))) {
+    return false;
+  }
+
+  // Only treat as image field if it matches specific patterns
+  const imageFieldPatterns = [
+    'photo',
+    'icon',
+    'thumbnail',
+    'src',
+    'image',
+    'mainimage',
+    'mainimagetoggle'
+  ];
+
+  // Check if field name matches image patterns (but not if it ends with "name")
+  const isImageField = imageFieldPatterns.some(pattern => {
+    if (fieldName === pattern) return true;
+    if (fieldName.includes('url') && fieldName.includes(pattern)) return true;
+    if (fieldName === 'thumburl') return true;
+    return false;
+  });
+
   if (isImageField) return true;
 
   // Otherwise check if value contains image extension or S3 URL
