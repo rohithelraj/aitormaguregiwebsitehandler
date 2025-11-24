@@ -90,12 +90,15 @@ document.addEventListener('keydown', (e) => {
 // Functions
 
 function cleanFilePath(filePath) {
+  // Normalize path separators for cross-platform compatibility
+  const normalizedPath = filePath.replace(/\\/g, '/');
+
   // Extract path after 'content/' for display
-  const contentIndex = filePath.indexOf('content/');
+  const contentIndex = normalizedPath.indexOf('content/');
   if (contentIndex !== -1) {
-    return filePath.substring(contentIndex + 'content/'.length);
+    return normalizedPath.substring(contentIndex + 'content/'.length);
   }
-  return filePath.split('/').slice(-3).join('/'); // fallback to last 3 parts
+  return normalizedPath.split('/').slice(-3).join('/'); // fallback to last 3 parts
 }
 
 async function loadJsonFiles() {
@@ -171,7 +174,7 @@ function displayFileList(files) {
       fileItem.className = 'file-item';
       fileItem.dataset.filePath = file;
 
-      const fileName = file.split('/').pop();
+      const fileName = file.replace(/\\/g, '/').split('/').pop();
 
       // File name container
       const fileNameContainer = document.createElement('div');
@@ -232,7 +235,9 @@ function groupFilesByCategory(files) {
   const groups = {};
 
   files.forEach(file => {
-    const parts = file.split('/');
+    // Normalize path separators (Windows uses backslash, Unix uses forward slash)
+    const normalizedPath = file.replace(/\\/g, '/');
+    const parts = normalizedPath.split('/');
     const contentIndex = parts.indexOf('content');
     const category = contentIndex >= 0 && parts[contentIndex + 1] ? parts[contentIndex + 1] : 'other';
 
@@ -255,7 +260,7 @@ async function loadFile(filePath) {
     emptyState.style.display = 'none';
     editorContainer.style.display = 'flex';
 
-    const fileName = filePath.split('/').pop();
+    const fileName = filePath.replace(/\\/g, '/').split('/').pop();
     currentFileName.textContent = fileName;
 
     // Store current data
@@ -729,7 +734,7 @@ async function handleImageUpload(input, path, preview, uploadStatus, progressBar
   }
 
   const localFilePath = fileResult.filePath;
-  const fileName = localFilePath.split('/').pop();
+  const fileName = localFilePath.replace(/\\/g, '/').split('/').pop();
 
   // Extract current S3 key structure from URL or create new one
   const currentUrl = input.value;
@@ -1202,7 +1207,7 @@ async function handleCreateFile(category) {
 }
 
 async function handleDeleteFile(filePath, category) {
-  const fileName = filePath.split('/').pop();
+  const fileName = filePath.replace(/\\/g, '/').split('/').pop();
 
   // Don't delete thumbs files
   if (fileName.includes('_thumbs.json')) {
