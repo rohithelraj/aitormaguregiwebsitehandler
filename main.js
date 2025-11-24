@@ -174,6 +174,22 @@ ipcMain.handle('create-json-file', async (event, category, fileName, initialData
       const folderName = fileName.replace('.json', '');
       folderPath = path.join(CONTENT_DIR, 'mattePainting', folderName);
       filePath = path.join(folderPath, fileName);
+    } else if (category === 'conceptArt') {
+      const folderName = fileName.replace('.json', '');
+      folderPath = path.join(CONTENT_DIR, 'conceptArt', folderName);
+      filePath = path.join(folderPath, fileName);
+    } else if (category === 'keyframe') {
+      const folderName = fileName.replace('.json', '');
+      folderPath = path.join(CONTENT_DIR, 'keyframe', folderName);
+      filePath = path.join(folderPath, fileName);
+    } else if (category === 'colorStudy') {
+      const folderName = fileName.replace('.json', '');
+      folderPath = path.join(CONTENT_DIR, 'colorStudy', folderName);
+      filePath = path.join(folderPath, fileName);
+    } else if (category === 'sketch') {
+      const folderName = fileName.replace('.json', '');
+      folderPath = path.join(CONTENT_DIR, 'sketch', folderName);
+      filePath = path.join(folderPath, fileName);
     } else {
       return { success: false, error: 'Invalid category' };
     }
@@ -214,7 +230,10 @@ ipcMain.handle('delete-json-file', async (event, filePath) => {
     const dirPath = path.dirname(filePath);
     const dirName = path.basename(dirPath);
 
-    if (dirName.startsWith('photography-') || dirName.startsWith('storyboard-') || dirName.startsWith('mattePainting-')) {
+    if (dirName.startsWith('photography-') || dirName.startsWith('storyboard-') ||
+        dirName.startsWith('mattePainting-') || dirName.startsWith('conceptArt-') ||
+        dirName.startsWith('keyframe-') || dirName.startsWith('colorStudy-') ||
+        dirName.startsWith('sketch-')) {
       try {
         const files = await fs.readdir(dirPath);
         if (files.length === 0) {

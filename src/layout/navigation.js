@@ -22,10 +22,10 @@ const Navigation = () => {
         React.createElement('span', { className: 'dropdown-trigger' }, 'WORK'),
         React.createElement('div', { className: 'dropdown-content' },
           React.createElement('a', { href: '/mattePainting/mattePainting-list-1.html' }, 'MATTE PAINTING'),
-          React.createElement('a', { href: '/concept-art.html' }, 'CONCEPT ART'),
-          React.createElement('a', { href: '/keyframe.html' }, 'KEYFRAME'),
-          React.createElement('a', { href: '/color-study.html' }, 'COLOR STUDY'),
-          React.createElement('a', { href: '/sketch.html' }, 'SKETCH'),
+          React.createElement('a', { href: '/conceptArt/conceptArt-list-1.html' }, 'CONCEPT ART'),
+          React.createElement('a', { href: '/keyframe/keyframe-list-1.html' }, 'KEYFRAME'),
+          React.createElement('a', { href: '/colorStudy/colorStudy-list-1.html' }, 'COLOR STUDY'),
+          React.createElement('a', { href: '/sketch/sketch-list-1.html' }, 'SKETCH'),
           React.createElement('a', { href: '/storyboard/storyboard-list-1.html' }, 'STORYBOARD'),
           React.createElement('a', { href: '/photography/photography-list-1.html' }, 'PHOTOGRAPHY')
         )

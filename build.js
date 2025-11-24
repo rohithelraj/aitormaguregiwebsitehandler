@@ -43,6 +43,14 @@ const { StoryboardListPage } = require('./src/pages/storyboard/storyboardList');
 const { StoryboardPage } = require('./src/pages/storyboard/storyboard');
 const { MattePaintingListPage } = require('./src/pages/mattePainting/mattePaintingList');
 const { MattePaintingPage } = require('./src/pages/mattePainting/mattePainting');
+const { ConceptArtListPage } = require('./src/pages/conceptArt/conceptArtList');
+const { ConceptArtPage } = require('./src/pages/conceptArt/conceptArt');
+const { KeyframeListPage } = require('./src/pages/keyframe/keyframeList');
+const { KeyframePage } = require('./src/pages/keyframe/keyframe');
+const { ColorStudyListPage } = require('./src/pages/colorStudy/colorStudyList');
+const { ColorStudyPage } = require('./src/pages/colorStudy/colorStudy');
+const { SketchListPage } = require('./src/pages/sketch/sketchList');
+const { SketchPage } = require('./src/pages/sketch/sketch');
 
 function generatePhotographyPage(photos, currentPage, totalPages, footerData) {
   const listingHtml = renderToString(
@@ -150,6 +158,178 @@ function generateMattePaintingPage(mattePaintings, currentPage, totalPages, foot
         <meta http-equiv="Pragma" content="no-cache">
         <meta http-equiv="Expires" content="0">
         <title>Matte Painting - Page ${currentPage}</title>
+        <link rel="stylesheet" href="../styles.css?v=${Date.now()}">
+        <script>
+          function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const hamburger = document.querySelector('.hamburger-menu');
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+          }
+
+          document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.querySelector('.hamburger-menu');
+            if (hamburger) {
+              hamburger.addEventListener('click', toggleMobileMenu);
+            }
+          });
+        </script>
+      </head>
+      <body>
+        <div id="app">${listingHtml}</div>
+      </body>
+    </html>`;
+}
+
+function generateConceptArtPage(conceptArts, currentPage, totalPages, footerData) {
+  const listingHtml = renderToString(
+    React.createElement(ConceptArtListPage, {
+      conceptArts,
+      currentPage,
+      totalPages,
+      footerData
+    })
+  );
+
+  return `<!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta http-equiv="Expires" content="0">
+        <title>Concept Art - Page ${currentPage}</title>
+        <link rel="stylesheet" href="../styles.css?v=${Date.now()}">
+        <script>
+          function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const hamburger = document.querySelector('.hamburger-menu');
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+          }
+
+          document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.querySelector('.hamburger-menu');
+            if (hamburger) {
+              hamburger.addEventListener('click', toggleMobileMenu);
+            }
+          });
+        </script>
+      </head>
+      <body>
+        <div id="app">${listingHtml}</div>
+      </body>
+    </html>`;
+}
+
+function generateKeyframePage(keyframes, currentPage, totalPages, footerData) {
+  const listingHtml = renderToString(
+    React.createElement(KeyframeListPage, {
+      keyframes,
+      currentPage,
+      totalPages,
+      footerData
+    })
+  );
+
+  return `<!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta http-equiv="Expires" content="0">
+        <title>Keyframe - Page ${currentPage}</title>
+        <link rel="stylesheet" href="../styles.css?v=${Date.now()}">
+        <script>
+          function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const hamburger = document.querySelector('.hamburger-menu');
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+          }
+
+          document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.querySelector('.hamburger-menu');
+            if (hamburger) {
+              hamburger.addEventListener('click', toggleMobileMenu);
+            }
+          });
+        </script>
+      </head>
+      <body>
+        <div id="app">${listingHtml}</div>
+      </body>
+    </html>`;
+}
+
+function generateColorStudyPage(colorStudies, currentPage, totalPages, footerData) {
+  const listingHtml = renderToString(
+    React.createElement(ColorStudyListPage, {
+      colorStudies,
+      currentPage,
+      totalPages,
+      footerData
+    })
+  );
+
+  return `<!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta http-equiv="Expires" content="0">
+        <title>Color Study - Page ${currentPage}</title>
+        <link rel="stylesheet" href="../styles.css?v=${Date.now()}">
+        <script>
+          function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const hamburger = document.querySelector('.hamburger-menu');
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+          }
+
+          document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.querySelector('.hamburger-menu');
+            if (hamburger) {
+              hamburger.addEventListener('click', toggleMobileMenu);
+            }
+          });
+        </script>
+      </head>
+      <body>
+        <div id="app">${listingHtml}</div>
+      </body>
+    </html>`;
+}
+
+function generateSketchPage(sketches, currentPage, totalPages, footerData) {
+  const listingHtml = renderToString(
+    React.createElement(SketchListPage, {
+      sketches,
+      currentPage,
+      totalPages,
+      footerData
+    })
+  );
+
+  return `<!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta http-equiv="Expires" content="0">
+        <title>Sketch - Page ${currentPage}</title>
         <link rel="stylesheet" href="../styles.css?v=${Date.now()}">
         <script>
           function toggleMobileMenu() {
@@ -589,6 +769,610 @@ async function buildSite() {
 
     fs.writeFileSync(
       path.join(mattePaintingPagesDir, fileName),
+      `<!DOCTYPE html>
+        <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+            <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+            <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+            <meta http-equiv="Pragma" content="no-cache">
+            <meta http-equiv="Expires" content="0">
+            <title>${title}</title>
+            <link rel="stylesheet" href="../../styles.css?v=${Date.now()}">
+            <script>
+              function toggleMobileMenu() {
+                const navLinks = document.getElementById('navLinks');
+                const hamburger = document.querySelector('.hamburger-menu');
+                navLinks.classList.toggle('active');
+                hamburger.classList.toggle('active');
+              }
+
+              document.addEventListener('DOMContentLoaded', function() {
+                const hamburger = document.querySelector('.hamburger-menu');
+                if (hamburger) {
+                  hamburger.addEventListener('click', toggleMobileMenu);
+                }
+
+                // Image toggle functionality
+                const imageToggle = document.getElementById('imageToggle');
+                const mainImage = document.getElementById('mainImage');
+
+                if (imageToggle && mainImage) {
+                  const mainImageSrc = mainImage.getAttribute('data-main-image');
+                  const toggleImageSrc = mainImage.getAttribute('data-toggle-image');
+
+                  if (toggleImageSrc) {
+                    imageToggle.addEventListener('change', function() {
+                      if (this.checked) {
+                        mainImage.src = toggleImageSrc;
+                      } else {
+                        mainImage.src = mainImageSrc;
+                      }
+                    });
+                  }
+                }
+
+                // Modal functionality for sub-images
+                const modal = document.getElementById('imageModal');
+                const modalImage = document.getElementById('modalImage');
+                const modalCaption = document.getElementById('modalCaption');
+                const closeModal = document.querySelector('.modal-close');
+                const clickableImages = document.querySelectorAll('.clickable-image');
+
+                // Open modal when clicking on sub-images
+                clickableImages.forEach(function(img) {
+                  img.addEventListener('click', function() {
+                    modal.style.display = 'flex';
+                    modalImage.src = this.getAttribute('data-image-url');
+                    modalCaption.textContent = this.getAttribute('data-image-name');
+                    document.body.style.overflow = 'hidden'; // Prevent scrolling
+                  });
+                });
+
+                // Close modal when clicking X
+                if (closeModal) {
+                  closeModal.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto'; // Re-enable scrolling
+                  });
+                }
+
+                // Close modal when clicking outside the image
+                if (modal) {
+                  modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                      modal.style.display = 'none';
+                      document.body.style.overflow = 'auto'; // Re-enable scrolling
+                    }
+                  });
+                }
+
+                // Close modal on ESC key
+                document.addEventListener('keydown', function(e) {
+                  if (e.key === 'Escape' && modal.style.display === 'flex') {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto'; // Re-enable scrolling
+                  }
+                });
+              });
+            </script>
+          </head>
+          <body>
+            <div id="app">${html}</div>
+          </body>
+        </html>`
+    );
+  }
+
+  // Build concept art list pages
+  const conceptArtDir = path.join(distDir, 'conceptArt');
+  if (!fs.existsSync(conceptArtDir)) {
+    fs.mkdirSync(conceptArtDir, { recursive: true });
+  }
+
+  const conceptArtThumbs = JSON.parse(
+    fs.readFileSync(path.join(__dirname, 'content/conceptArt/conceptArt_thumbs.json'), 'utf8')
+  );
+
+  const CONCEPTART_ITEMS_PER_PAGE = 6;
+  const conceptArtTotalPages = Math.ceil(conceptArtThumbs.length / CONCEPTART_ITEMS_PER_PAGE);
+
+  for (let page = 1; page <= conceptArtTotalPages; page++) {
+    const startIdx = (page - 1) * CONCEPTART_ITEMS_PER_PAGE;
+    const endIdx = startIdx + CONCEPTART_ITEMS_PER_PAGE;
+    const pageConceptArts = conceptArtThumbs.slice(startIdx, endIdx);
+
+    fs.writeFileSync(
+      path.join(conceptArtDir, `conceptArt-list-${page}.html`),
+      generateConceptArtPage(pageConceptArts, page, conceptArtTotalPages, footerData)
+    );
+  }
+
+  // Build individual concept art detail pages
+  const conceptArtPagesDir = path.join(conceptArtDir, 'pages');
+  if (!fs.existsSync(conceptArtPagesDir)) {
+    fs.mkdirSync(conceptArtPagesDir, { recursive: true });
+  }
+
+  const conceptArtContentDir = path.join(__dirname, 'content/conceptArt');
+  const conceptArtFolders = fs.readdirSync(conceptArtContentDir)
+    .filter(item => fs.statSync(path.join(conceptArtContentDir, item)).isDirectory())
+    .filter(folder => folder.startsWith('conceptArt-'));
+
+  const conceptArtDetails = conceptArtFolders.map(folder => {
+    const folderPath = path.join(conceptArtContentDir, folder);
+    const jsonFiles = fs.readdirSync(folderPath).filter(file => file.endsWith('.json'));
+
+    if (jsonFiles.length > 0) {
+      const jsonFile = jsonFiles[0];
+      const content = JSON.parse(fs.readFileSync(path.join(folderPath, jsonFile), 'utf8'));
+      const conceptArtNumber = folder.replace('conceptArt-', '');
+      return { content, conceptArtNumber };
+    }
+    return null;
+  }).filter(item => item !== null);
+
+  for (const conceptArt of conceptArtDetails) {
+    const html = renderToString(React.createElement(ConceptArtPage, { content: conceptArt.content, footerData: footerData }));
+    const title = conceptArt.content.tilte || conceptArt.content.title || 'Concept Art';
+    const fileName = `Concept-Art-Example-${conceptArt.conceptArtNumber}.html`;
+
+    fs.writeFileSync(
+      path.join(conceptArtPagesDir, fileName),
+      `<!DOCTYPE html>
+        <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+            <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+            <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+            <meta http-equiv="Pragma" content="no-cache">
+            <meta http-equiv="Expires" content="0">
+            <title>${title}</title>
+            <link rel="stylesheet" href="../../styles.css?v=${Date.now()}">
+            <script>
+              function toggleMobileMenu() {
+                const navLinks = document.getElementById('navLinks');
+                const hamburger = document.querySelector('.hamburger-menu');
+                navLinks.classList.toggle('active');
+                hamburger.classList.toggle('active');
+              }
+
+              document.addEventListener('DOMContentLoaded', function() {
+                const hamburger = document.querySelector('.hamburger-menu');
+                if (hamburger) {
+                  hamburger.addEventListener('click', toggleMobileMenu);
+                }
+
+                // Image toggle functionality
+                const imageToggle = document.getElementById('imageToggle');
+                const mainImage = document.getElementById('mainImage');
+
+                if (imageToggle && mainImage) {
+                  const mainImageSrc = mainImage.getAttribute('data-main-image');
+                  const toggleImageSrc = mainImage.getAttribute('data-toggle-image');
+
+                  if (toggleImageSrc) {
+                    imageToggle.addEventListener('change', function() {
+                      if (this.checked) {
+                        mainImage.src = toggleImageSrc;
+                      } else {
+                        mainImage.src = mainImageSrc;
+                      }
+                    });
+                  }
+                }
+
+                // Modal functionality for sub-images
+                const modal = document.getElementById('imageModal');
+                const modalImage = document.getElementById('modalImage');
+                const modalCaption = document.getElementById('modalCaption');
+                const closeModal = document.querySelector('.modal-close');
+                const clickableImages = document.querySelectorAll('.clickable-image');
+
+                // Open modal when clicking on sub-images
+                clickableImages.forEach(function(img) {
+                  img.addEventListener('click', function() {
+                    modal.style.display = 'flex';
+                    modalImage.src = this.getAttribute('data-image-url');
+                    modalCaption.textContent = this.getAttribute('data-image-name');
+                    document.body.style.overflow = 'hidden'; // Prevent scrolling
+                  });
+                });
+
+                // Close modal when clicking X
+                if (closeModal) {
+                  closeModal.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto'; // Re-enable scrolling
+                  });
+                }
+
+                // Close modal when clicking outside the image
+                if (modal) {
+                  modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                      modal.style.display = 'none';
+                      document.body.style.overflow = 'auto'; // Re-enable scrolling
+                    }
+                  });
+                }
+
+                // Close modal on ESC key
+                document.addEventListener('keydown', function(e) {
+                  if (e.key === 'Escape' && modal.style.display === 'flex') {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto'; // Re-enable scrolling
+                  }
+                });
+              });
+            </script>
+          </head>
+          <body>
+            <div id="app">${html}</div>
+          </body>
+        </html>`
+    );
+  }
+
+  // Build keyframe list pages
+  const keyframeDir = path.join(distDir, 'keyframe');
+  if (!fs.existsSync(keyframeDir)) {
+    fs.mkdirSync(keyframeDir, { recursive: true });
+  }
+
+  const keyframeThumbs = JSON.parse(
+    fs.readFileSync(path.join(__dirname, 'content/keyframe/keyframe_thumbs.json'), 'utf8')
+  );
+
+  const KEYFRAME_ITEMS_PER_PAGE = 6;
+  const keyframeTotalPages = Math.ceil(keyframeThumbs.length / KEYFRAME_ITEMS_PER_PAGE);
+
+  for (let page = 1; page <= keyframeTotalPages; page++) {
+    const startIdx = (page - 1) * KEYFRAME_ITEMS_PER_PAGE;
+    const endIdx = startIdx + KEYFRAME_ITEMS_PER_PAGE;
+    const pageKeyframes = keyframeThumbs.slice(startIdx, endIdx);
+
+    fs.writeFileSync(
+      path.join(keyframeDir, `keyframe-list-${page}.html`),
+      generateKeyframePage(pageKeyframes, page, keyframeTotalPages, footerData)
+    );
+  }
+
+  // Build individual keyframe detail pages
+  const keyframePagesDir = path.join(keyframeDir, 'pages');
+  if (!fs.existsSync(keyframePagesDir)) {
+    fs.mkdirSync(keyframePagesDir, { recursive: true });
+  }
+
+  const keyframeContentDir = path.join(__dirname, 'content/keyframe');
+  const keyframeFolders = fs.readdirSync(keyframeContentDir)
+    .filter(item => fs.statSync(path.join(keyframeContentDir, item)).isDirectory())
+    .filter(folder => folder.startsWith('keyframe-'));
+
+  const keyframeDetails = keyframeFolders.map(folder => {
+    const folderPath = path.join(keyframeContentDir, folder);
+    const jsonFiles = fs.readdirSync(folderPath).filter(file => file.endsWith('.json'));
+
+    if (jsonFiles.length > 0) {
+      const jsonFile = jsonFiles[0];
+      const content = JSON.parse(fs.readFileSync(path.join(folderPath, jsonFile), 'utf8'));
+      const keyframeNumber = folder.replace('keyframe-', '');
+      return { content, keyframeNumber };
+    }
+    return null;
+  }).filter(item => item !== null);
+
+  for (const keyframe of keyframeDetails) {
+    const html = renderToString(React.createElement(KeyframePage, { content: keyframe.content, footerData: footerData }));
+    const title = keyframe.content.tilte || keyframe.content.title || 'Keyframe';
+    const fileName = `Keyframe-Example-${keyframe.keyframeNumber}.html`;
+
+    fs.writeFileSync(
+      path.join(keyframePagesDir, fileName),
+      `<!DOCTYPE html>
+        <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+            <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+            <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+            <meta http-equiv="Pragma" content="no-cache">
+            <meta http-equiv="Expires" content="0">
+            <title>${title}</title>
+            <link rel="stylesheet" href="../../styles.css?v=${Date.now()}">
+            <script>
+              function toggleMobileMenu() {
+                const navLinks = document.getElementById('navLinks');
+                const hamburger = document.querySelector('.hamburger-menu');
+                navLinks.classList.toggle('active');
+                hamburger.classList.toggle('active');
+              }
+
+              document.addEventListener('DOMContentLoaded', function() {
+                const hamburger = document.querySelector('.hamburger-menu');
+                if (hamburger) {
+                  hamburger.addEventListener('click', toggleMobileMenu);
+                }
+
+                // Image toggle functionality
+                const imageToggle = document.getElementById('imageToggle');
+                const mainImage = document.getElementById('mainImage');
+
+                if (imageToggle && mainImage) {
+                  const mainImageSrc = mainImage.getAttribute('data-main-image');
+                  const toggleImageSrc = mainImage.getAttribute('data-toggle-image');
+
+                  if (toggleImageSrc) {
+                    imageToggle.addEventListener('change', function() {
+                      if (this.checked) {
+                        mainImage.src = toggleImageSrc;
+                      } else {
+                        mainImage.src = mainImageSrc;
+                      }
+                    });
+                  }
+                }
+
+                // Modal functionality for sub-images
+                const modal = document.getElementById('imageModal');
+                const modalImage = document.getElementById('modalImage');
+                const modalCaption = document.getElementById('modalCaption');
+                const closeModal = document.querySelector('.modal-close');
+                const clickableImages = document.querySelectorAll('.clickable-image');
+
+                // Open modal when clicking on sub-images
+                clickableImages.forEach(function(img) {
+                  img.addEventListener('click', function() {
+                    modal.style.display = 'flex';
+                    modalImage.src = this.getAttribute('data-image-url');
+                    modalCaption.textContent = this.getAttribute('data-image-name');
+                    document.body.style.overflow = 'hidden'; // Prevent scrolling
+                  });
+                });
+
+                // Close modal when clicking X
+                if (closeModal) {
+                  closeModal.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto'; // Re-enable scrolling
+                  });
+                }
+
+                // Close modal when clicking outside the image
+                if (modal) {
+                  modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                      modal.style.display = 'none';
+                      document.body.style.overflow = 'auto'; // Re-enable scrolling
+                    }
+                  });
+                }
+
+                // Close modal on ESC key
+                document.addEventListener('keydown', function(e) {
+                  if (e.key === 'Escape' && modal.style.display === 'flex') {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto'; // Re-enable scrolling
+                  }
+                });
+              });
+            </script>
+          </head>
+          <body>
+            <div id="app">${html}</div>
+          </body>
+        </html>`
+    );
+  }
+
+  // Build color study list pages
+  const colorStudyDir = path.join(distDir, 'colorStudy');
+  if (!fs.existsSync(colorStudyDir)) {
+    fs.mkdirSync(colorStudyDir, { recursive: true });
+  }
+
+  const colorStudyThumbs = JSON.parse(
+    fs.readFileSync(path.join(__dirname, 'content/colorStudy/colorStudy_thumbs.json'), 'utf8')
+  );
+
+  const COLORSTUDY_ITEMS_PER_PAGE = 6;
+  const colorStudyTotalPages = Math.ceil(colorStudyThumbs.length / COLORSTUDY_ITEMS_PER_PAGE);
+
+  for (let page = 1; page <= colorStudyTotalPages; page++) {
+    const startIdx = (page - 1) * COLORSTUDY_ITEMS_PER_PAGE;
+    const endIdx = startIdx + COLORSTUDY_ITEMS_PER_PAGE;
+    const pageColorStudies = colorStudyThumbs.slice(startIdx, endIdx);
+
+    fs.writeFileSync(
+      path.join(colorStudyDir, `colorStudy-list-${page}.html`),
+      generateColorStudyPage(pageColorStudies, page, colorStudyTotalPages, footerData)
+    );
+  }
+
+  // Build individual color study detail pages
+  const colorStudyPagesDir = path.join(colorStudyDir, 'pages');
+  if (!fs.existsSync(colorStudyPagesDir)) {
+    fs.mkdirSync(colorStudyPagesDir, { recursive: true });
+  }
+
+  const colorStudyContentDir = path.join(__dirname, 'content/colorStudy');
+  const colorStudyFolders = fs.readdirSync(colorStudyContentDir)
+    .filter(item => fs.statSync(path.join(colorStudyContentDir, item)).isDirectory())
+    .filter(folder => folder.startsWith('colorStudy-'));
+
+  const colorStudyDetails = colorStudyFolders.map(folder => {
+    const folderPath = path.join(colorStudyContentDir, folder);
+    const jsonFiles = fs.readdirSync(folderPath).filter(file => file.endsWith('.json'));
+
+    if (jsonFiles.length > 0) {
+      const jsonFile = jsonFiles[0];
+      const content = JSON.parse(fs.readFileSync(path.join(folderPath, jsonFile), 'utf8'));
+      const colorStudyNumber = folder.replace('colorStudy-', '');
+      return { content, colorStudyNumber };
+    }
+    return null;
+  }).filter(item => item !== null);
+
+  for (const colorStudy of colorStudyDetails) {
+    const html = renderToString(React.createElement(ColorStudyPage, { content: colorStudy.content, footerData: footerData }));
+    const title = colorStudy.content.tilte || colorStudy.content.title || 'Color Study';
+    const fileName = `Color-Study-Example-${colorStudy.colorStudyNumber}.html`;
+
+    fs.writeFileSync(
+      path.join(colorStudyPagesDir, fileName),
+      `<!DOCTYPE html>
+        <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+            <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+            <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+            <meta http-equiv="Pragma" content="no-cache">
+            <meta http-equiv="Expires" content="0">
+            <title>${title}</title>
+            <link rel="stylesheet" href="../../styles.css?v=${Date.now()}">
+            <script>
+              function toggleMobileMenu() {
+                const navLinks = document.getElementById('navLinks');
+                const hamburger = document.querySelector('.hamburger-menu');
+                navLinks.classList.toggle('active');
+                hamburger.classList.toggle('active');
+              }
+
+              document.addEventListener('DOMContentLoaded', function() {
+                const hamburger = document.querySelector('.hamburger-menu');
+                if (hamburger) {
+                  hamburger.addEventListener('click', toggleMobileMenu);
+                }
+
+                // Image toggle functionality
+                const imageToggle = document.getElementById('imageToggle');
+                const mainImage = document.getElementById('mainImage');
+
+                if (imageToggle && mainImage) {
+                  const mainImageSrc = mainImage.getAttribute('data-main-image');
+                  const toggleImageSrc = mainImage.getAttribute('data-toggle-image');
+
+                  if (toggleImageSrc) {
+                    imageToggle.addEventListener('change', function() {
+                      if (this.checked) {
+                        mainImage.src = toggleImageSrc;
+                      } else {
+                        mainImage.src = mainImageSrc;
+                      }
+                    });
+                  }
+                }
+
+                // Modal functionality for sub-images
+                const modal = document.getElementById('imageModal');
+                const modalImage = document.getElementById('modalImage');
+                const modalCaption = document.getElementById('modalCaption');
+                const closeModal = document.querySelector('.modal-close');
+                const clickableImages = document.querySelectorAll('.clickable-image');
+
+                // Open modal when clicking on sub-images
+                clickableImages.forEach(function(img) {
+                  img.addEventListener('click', function() {
+                    modal.style.display = 'flex';
+                    modalImage.src = this.getAttribute('data-image-url');
+                    modalCaption.textContent = this.getAttribute('data-image-name');
+                    document.body.style.overflow = 'hidden'; // Prevent scrolling
+                  });
+                });
+
+                // Close modal when clicking X
+                if (closeModal) {
+                  closeModal.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto'; // Re-enable scrolling
+                  });
+                }
+
+                // Close modal when clicking outside the image
+                if (modal) {
+                  modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                      modal.style.display = 'none';
+                      document.body.style.overflow = 'auto'; // Re-enable scrolling
+                    }
+                  });
+                }
+
+                // Close modal on ESC key
+                document.addEventListener('keydown', function(e) {
+                  if (e.key === 'Escape' && modal.style.display === 'flex') {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto'; // Re-enable scrolling
+                  }
+                });
+              });
+            </script>
+          </head>
+          <body>
+            <div id="app">${html}</div>
+          </body>
+        </html>`
+    );
+  }
+
+  // Build sketch list pages
+  const sketchDir = path.join(distDir, 'sketch');
+  if (!fs.existsSync(sketchDir)) {
+    fs.mkdirSync(sketchDir, { recursive: true });
+  }
+
+  const sketchThumbs = JSON.parse(
+    fs.readFileSync(path.join(__dirname, 'content/sketch/sketch_thumbs.json'), 'utf8')
+  );
+
+  const SKETCH_ITEMS_PER_PAGE = 6;
+  const sketchTotalPages = Math.ceil(sketchThumbs.length / SKETCH_ITEMS_PER_PAGE);
+
+  for (let page = 1; page <= sketchTotalPages; page++) {
+    const startIdx = (page - 1) * SKETCH_ITEMS_PER_PAGE;
+    const endIdx = startIdx + SKETCH_ITEMS_PER_PAGE;
+    const pageSketches = sketchThumbs.slice(startIdx, endIdx);
+
+    fs.writeFileSync(
+      path.join(sketchDir, `sketch-list-${page}.html`),
+      generateSketchPage(pageSketches, page, sketchTotalPages, footerData)
+    );
+  }
+
+  // Build individual sketch detail pages
+  const sketchPagesDir = path.join(sketchDir, 'pages');
+  if (!fs.existsSync(sketchPagesDir)) {
+    fs.mkdirSync(sketchPagesDir, { recursive: true });
+  }
+
+  const sketchContentDir = path.join(__dirname, 'content/sketch');
+  const sketchFolders = fs.readdirSync(sketchContentDir)
+    .filter(item => fs.statSync(path.join(sketchContentDir, item)).isDirectory())
+    .filter(folder => folder.startsWith('sketch-'));
+
+  const sketchDetails = sketchFolders.map(folder => {
+    const folderPath = path.join(sketchContentDir, folder);
+    const jsonFiles = fs.readdirSync(folderPath).filter(file => file.endsWith('.json'));
+
+    if (jsonFiles.length > 0) {
+      const jsonFile = jsonFiles[0];
+      const content = JSON.parse(fs.readFileSync(path.join(folderPath, jsonFile), 'utf8'));
+      const sketchNumber = folder.replace('sketch-', '');
+      return { content, sketchNumber };
+    }
+    return null;
+  }).filter(item => item !== null);
+
+  for (const sketch of sketchDetails) {
+    const html = renderToString(React.createElement(SketchPage, { content: sketch.content, footerData: footerData }));
+    const title = sketch.content.tilte || sketch.content.title || 'Sketch';
+    const fileName = `Sketch-Example-${sketch.sketchNumber}.html`;
+
+    fs.writeFileSync(
+      path.join(sketchPagesDir, fileName),
       `<!DOCTYPE html>
         <html lang="en">
           <head>

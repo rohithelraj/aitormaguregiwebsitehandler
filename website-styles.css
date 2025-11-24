@@ -972,6 +972,474 @@ html {
     margin: 0 auto;
 }
 
+/* Concept Art page styles */
+.concept-art-content {
+    background: black;
+    min-height: 100vh;
+    padding: 8rem 2rem 2rem 2rem;
+    box-sizing: border-box;
+}
+
+.concept-art-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto 3rem auto;
+}
+
+.concept-art-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.concept-art-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(255, 215, 0, 0.3);
+}
+
+.concept-art-card .card-image {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+}
+
+.concept-art-card .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.concept-art-card:hover .card-image img {
+    transform: scale(1.05);
+}
+
+.concept-art-card .card-content {
+    padding: 1rem;
+}
+
+.concept-art-card .card-content h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: white;
+}
+
+.concept-art-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    height: 100%;
+}
+
+.concept-art-detail-content {
+    background: black;
+    min-height: 100vh;
+    padding: 8rem 2rem 2rem 2rem;
+    box-sizing: border-box;
+}
+
+.concept-art-detail {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.concept-art-detail .detail-title {
+    font-size: 2.5rem;
+    font-weight: 300;
+    margin-bottom: 2rem;
+    color: white;
+    text-align: center;
+}
+
+.concept-art-detail .detail-image-section {
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.concept-art-detail .detail-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+}
+
+.concept-art-detail .image-caption {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+    margin-top: 0.5rem;
+}
+
+.concept-art-detail .detail-text-section {
+    margin-bottom: 3rem;
+}
+
+.concept-art-detail .detail-description {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Keyframe page styles */
+.keyframe-content {
+    background: black;
+    min-height: 100vh;
+    padding: 8rem 2rem 2rem 2rem;
+    box-sizing: border-box;
+}
+
+.keyframe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto 3rem auto;
+}
+
+.keyframe-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.keyframe-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(255, 215, 0, 0.3);
+}
+
+.keyframe-card .card-image {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+}
+
+.keyframe-card .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.keyframe-card:hover .card-image img {
+    transform: scale(1.05);
+}
+
+.keyframe-card .card-content {
+    padding: 1rem;
+}
+
+.keyframe-card .card-content h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: white;
+}
+
+.keyframe-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    height: 100%;
+}
+
+.keyframe-detail-content {
+    background: black;
+    min-height: 100vh;
+    padding: 8rem 2rem 2rem 2rem;
+    box-sizing: border-box;
+}
+
+.keyframe-detail {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.keyframe-detail .detail-title {
+    font-size: 2.5rem;
+    font-weight: 300;
+    margin-bottom: 2rem;
+    color: white;
+    text-align: center;
+}
+
+.keyframe-detail .detail-image-section {
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.keyframe-detail .detail-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+}
+
+.keyframe-detail .image-caption {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+    margin-top: 0.5rem;
+}
+
+.keyframe-detail .detail-text-section {
+    margin-bottom: 3rem;
+}
+
+.keyframe-detail .detail-description {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Color Study page styles */
+.color-study-content {
+    background: black;
+    min-height: 100vh;
+    padding: 8rem 2rem 2rem 2rem;
+    box-sizing: border-box;
+}
+
+.color-study-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto 3rem auto;
+}
+
+.color-study-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.color-study-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(255, 215, 0, 0.3);
+}
+
+.color-study-card .card-image {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+}
+
+.color-study-card .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.color-study-card:hover .card-image img {
+    transform: scale(1.05);
+}
+
+.color-study-card .card-content {
+    padding: 1rem;
+}
+
+.color-study-card .card-content h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: white;
+}
+
+.color-study-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    height: 100%;
+}
+
+.color-study-detail-content {
+    background: black;
+    min-height: 100vh;
+    padding: 8rem 2rem 2rem 2rem;
+    box-sizing: border-box;
+}
+
+.color-study-detail {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.color-study-detail .detail-title {
+    font-size: 2.5rem;
+    font-weight: 300;
+    margin-bottom: 2rem;
+    color: white;
+    text-align: center;
+}
+
+.color-study-detail .detail-image-section {
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.color-study-detail .detail-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+}
+
+.color-study-detail .image-caption {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+    margin-top: 0.5rem;
+}
+
+.color-study-detail .detail-text-section {
+    margin-bottom: 3rem;
+}
+
+.color-study-detail .detail-description {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Sketch page styles */
+.sketch-content {
+    background: black;
+    min-height: 100vh;
+    padding: 8rem 2rem 2rem 2rem;
+    box-sizing: border-box;
+}
+
+.sketch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto 3rem auto;
+}
+
+.sketch-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.sketch-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(255, 215, 0, 0.3);
+}
+
+.sketch-card .card-image {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+}
+
+.sketch-card .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.sketch-card:hover .card-image img {
+    transform: scale(1.05);
+}
+
+.sketch-card .card-content {
+    padding: 1rem;
+}
+
+.sketch-card .card-content h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: white;
+}
+
+.sketch-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    height: 100%;
+}
+
+.sketch-detail-content {
+    background: black;
+    min-height: 100vh;
+    padding: 8rem 2rem 2rem 2rem;
+    box-sizing: border-box;
+}
+
+.sketch-detail {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.sketch-detail .detail-title {
+    font-size: 2.5rem;
+    font-weight: 300;
+    margin-bottom: 2rem;
+    color: white;
+    text-align: center;
+}
+
+.sketch-detail .detail-image-section {
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.sketch-detail .detail-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+}
+
+.sketch-detail .image-caption {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+    margin-top: 0.5rem;
+}
+
+.sketch-detail .detail-text-section {
+    margin-bottom: 3rem;
+}
+
+.sketch-detail .detail-description {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .sub-images-grid {
@@ -983,7 +1451,11 @@ html {
         padding: 0.75rem;
     }
 
-    .matte-painting-detail .detail-title {
+    .matte-painting-detail .detail-title,
+    .concept-art-detail .detail-title,
+    .keyframe-detail .detail-title,
+    .color-study-detail .detail-title,
+    .sketch-detail .detail-title {
         font-size: 2rem;
     }
 
