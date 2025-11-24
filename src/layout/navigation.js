@@ -21,7 +21,7 @@ const Navigation = () => {
       React.createElement('div', { className: 'dropdown' },
         React.createElement('a', { href: '/work.html' }, 'WORK'),
         React.createElement('div', { className: 'dropdown-content' },
-          React.createElement('a', { href: '/matte-painting.html' }, 'MATTE PAINTING'),
+          React.createElement('a', { href: '/mattePainting/mattePainting-list-1.html' }, 'MATTE PAINTING'),
           React.createElement('a', { href: '/concept-art.html' }, 'CONCEPT ART'),
           React.createElement('a', { href: '/keyframe.html' }, 'KEYFRAME'),
           React.createElement('a', { href: '/color-study.html' }, 'COLOR STUDY'),

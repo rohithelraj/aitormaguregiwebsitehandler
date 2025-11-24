@@ -24,6 +24,14 @@ if (process.versions.electron && !__dirname.includes('app.asar')) {
 }
 
 require('@babel/register');
+
+// Clear require cache for src files to ensure fresh builds
+Object.keys(require.cache).forEach(key => {
+  if (key.includes('/src/')) {
+    delete require.cache[key];
+  }
+});
+
 const React = require('react');
 const { renderToString } = require('react-dom/server');
 const HomePage = require('./src/home').HomePage;
@@ -32,6 +40,8 @@ const { PhotographyListPage } = require('./src/pages/photography/photographyList
 const { PhotographyPage } = require('./src/pages/photography/photography');
 const { StoryboardListPage } = require('./src/pages/storyboard/storyboardList');
 const { StoryboardPage } = require('./src/pages/storyboard/storyboard');
+const { MattePaintingListPage } = require('./src/pages/mattePainting/mattePaintingList');
+const { MattePaintingPage } = require('./src/pages/mattePainting/mattePainting');
 
 function generatePhotographyPage(photos, currentPage, totalPages) {
   const listingHtml = renderToString(
@@ -92,6 +102,47 @@ function generateStoryboardPage(storyboards, currentPage, totalPages) {
         <meta http-equiv="Pragma" content="no-cache">
         <meta http-equiv="Expires" content="0">
         <title>Storyboard - Page ${currentPage}</title>
+        <link rel="stylesheet" href="../styles.css?v=${Date.now()}">
+        <script>
+          function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const hamburger = document.querySelector('.hamburger-menu');
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+          }
+
+          document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.querySelector('.hamburger-menu');
+            if (hamburger) {
+              hamburger.addEventListener('click', toggleMobileMenu);
+            }
+          });
+        </script>
+      </head>
+      <body>
+        <div id="app">${listingHtml}</div>
+      </body>
+    </html>`;
+}
+
+function generateMattePaintingPage(mattePaintings, currentPage, totalPages) {
+  const listingHtml = renderToString(
+    React.createElement(MattePaintingListPage, {
+      mattePaintings,
+      currentPage,
+      totalPages
+    })
+  );
+
+  return `<!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta http-equiv="Expires" content="0">
+        <title>Matte Painting - Page ${currentPage}</title>
         <link rel="stylesheet" href="../styles.css?v=${Date.now()}">
         <script>
           function toggleMobileMenu() {
@@ -407,6 +458,113 @@ async function buildSite() {
                 const hamburger = document.querySelector('.hamburger-menu');
                 if (hamburger) {
                   hamburger.addEventListener('click', toggleMobileMenu);
+                }
+              });
+            </script>
+          </head>
+          <body>
+            <div id="app">${html}</div>
+          </body>
+        </html>`
+    );
+  }
+
+  // Build matte painting list pages
+  const mattePaintingDir = path.join(distDir, 'mattePainting');
+  if (!fs.existsSync(mattePaintingDir)) {
+    fs.mkdirSync(mattePaintingDir, { recursive: true });
+  }
+
+  const mattePaintingThumbs = JSON.parse(
+    fs.readFileSync(path.join(__dirname, 'content/mattePainting/mattePainting_thumbs.json'), 'utf8')
+  );
+
+  const MATTEPAINTING_ITEMS_PER_PAGE = 6;
+  const mattePaintingTotalPages = Math.ceil(mattePaintingThumbs.length / MATTEPAINTING_ITEMS_PER_PAGE);
+
+  for (let page = 1; page <= mattePaintingTotalPages; page++) {
+    const startIdx = (page - 1) * MATTEPAINTING_ITEMS_PER_PAGE;
+    const endIdx = startIdx + MATTEPAINTING_ITEMS_PER_PAGE;
+    const pageMattePaintings = mattePaintingThumbs.slice(startIdx, endIdx);
+
+    fs.writeFileSync(
+      path.join(mattePaintingDir, `mattePainting-list-${page}.html`),
+      generateMattePaintingPage(pageMattePaintings, page, mattePaintingTotalPages)
+    );
+  }
+
+  // Build individual matte painting detail pages
+  const mattePaintingPagesDir = path.join(mattePaintingDir, 'pages');
+  if (!fs.existsSync(mattePaintingPagesDir)) {
+    fs.mkdirSync(mattePaintingPagesDir, { recursive: true });
+  }
+
+  const mattePaintingContentDir = path.join(__dirname, 'content/mattePainting');
+  const mattePaintingFolders = fs.readdirSync(mattePaintingContentDir)
+    .filter(item => fs.statSync(path.join(mattePaintingContentDir, item)).isDirectory())
+    .filter(folder => folder.startsWith('mattePainting-'));
+
+  const mattePaintingDetails = mattePaintingFolders.map(folder => {
+    const folderPath = path.join(mattePaintingContentDir, folder);
+    const jsonFiles = fs.readdirSync(folderPath).filter(file => file.endsWith('.json'));
+
+    if (jsonFiles.length > 0) {
+      const jsonFile = jsonFiles[0];
+      const content = JSON.parse(fs.readFileSync(path.join(folderPath, jsonFile), 'utf8'));
+      const mattePaintingNumber = folder.replace('mattePainting-', '');
+      return { content, mattePaintingNumber };
+    }
+    return null;
+  }).filter(item => item !== null);
+
+  for (const mattePainting of mattePaintingDetails) {
+    const html = renderToString(React.createElement(MattePaintingPage, { content: mattePainting.content }));
+    const title = mattePainting.content.tilte || mattePainting.content.title || 'Matte Painting';
+    const fileName = `${title.replace(/[^a-zA-Z0-9]/g, '-')}-${mattePainting.mattePaintingNumber}.html`;
+
+    fs.writeFileSync(
+      path.join(mattePaintingPagesDir, fileName),
+      `<!DOCTYPE html>
+        <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+            <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+            <meta http-equiv="Pragma" content="no-cache">
+            <meta http-equiv="Expires" content="0">
+            <title>${title}</title>
+            <link rel="stylesheet" href="../../styles.css?v=${Date.now()}">
+            <script>
+              function toggleMobileMenu() {
+                const navLinks = document.getElementById('navLinks');
+                const hamburger = document.querySelector('.hamburger-menu');
+                navLinks.classList.toggle('active');
+                hamburger.classList.toggle('active');
+              }
+
+              document.addEventListener('DOMContentLoaded', function() {
+                const hamburger = document.querySelector('.hamburger-menu');
+                if (hamburger) {
+                  hamburger.addEventListener('click', toggleMobileMenu);
+                }
+
+                // Image toggle functionality
+                const imageToggle = document.getElementById('imageToggle');
+                const mainImage = document.getElementById('mainImage');
+
+                if (imageToggle && mainImage) {
+                  const mainImageSrc = mainImage.getAttribute('data-main-image');
+                  const toggleImageSrc = mainImage.getAttribute('data-toggle-image');
+
+                  if (toggleImageSrc) {
+                    imageToggle.addEventListener('change', function() {
+                      if (this.checked) {
+                        mainImage.src = toggleImageSrc;
+                      } else {
+                        mainImage.src = mainImageSrc;
+                      }
+                    });
+                  }
                 }
               });
             </script>

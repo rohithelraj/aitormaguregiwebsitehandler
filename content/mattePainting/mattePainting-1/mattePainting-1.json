@@ -1,13 +1,13 @@
 {
   "id": "mattePainting-1",
-  "tilte": "Eighteenth century ship",
+  "tilte": "Eighteenth century ship with banners in the air",
   "mainImage": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/work/mattePainting/mattePainting-1/caravel+at+rhodes.jpg",
-  "Description" : "The image provides data about a caravel visiting the port of Rhodos in the mediterranen sea.",
-  "mainImageToggle" : "",
-  "thumbnail" : "",
-  "mainImageName": "Caravel Visiting Rhodos",
-  "videoUrl": "",
-  "videoDescription": "",
+  "Description": "The image provides data about a caravel visiting the port of Rhodos in the mediterranen sea.",
+  "mainImageToggle": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/work/mattePainting/mattePainting-1/caravel+in+the+mediterranean+coast.jpg",
+  "thumbnail": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/work/mattePainting/mattePainting-1/caravel+with+statue+behind.jpg",
+  "mainImageName": "Caravel Visiting Rhodos in the wind",
+  "videoUrl": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/reel/reel.mp4",
+  "videoDescription": "kneerr eeddss",
   "subImages": [
     {
       "name": "Caravel near a mediterranean village",

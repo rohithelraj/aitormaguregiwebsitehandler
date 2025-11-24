@@ -553,6 +553,260 @@ html {
     color: white;
 }
 
+/* Matte Painting page styles */
+.matte-painting-content {
+    background: black;
+    min-height: 100vh;
+    padding: 8rem 2rem 2rem 2rem;
+    box-sizing: border-box;
+}
+
+/* Matte Painting grid styles */
+.matte-painting-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto 3rem auto;
+}
+
+.matte-painting-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.matte-painting-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(255, 215, 0, 0.3);
+}
+
+.matte-painting-card .card-image {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+}
+
+.matte-painting-card .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.matte-painting-card:hover .card-image img {
+    transform: scale(1.05);
+}
+
+.matte-painting-card .card-content {
+    padding: 1rem;
+}
+
+.matte-painting-card .card-content h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: white;
+}
+
+/* Matte Painting card link styling */
+.matte-painting-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    height: 100%;
+}
+
+/* Matte Painting detail page styles */
+.matte-painting-detail-content {
+    background: black;
+    min-height: 100vh;
+    padding: 8rem 2rem 2rem 2rem;
+    box-sizing: border-box;
+}
+
+.matte-painting-detail {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.matte-painting-detail .detail-title {
+    font-size: 2.5rem;
+    font-weight: 300;
+    margin-bottom: 2rem;
+    color: white;
+    text-align: center;
+}
+
+/* Image toggle control */
+.image-toggle-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.toggle-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 0.5rem;
+}
+
+.toggle-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #ffd700;
+}
+
+.toggle-text {
+    color: white;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+/* Main image section */
+.matte-painting-detail .detail-image-section {
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.matte-painting-detail .detail-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+}
+
+.matte-painting-detail .image-caption {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+    margin-top: 0.5rem;
+}
+
+/* Description section */
+.matte-painting-detail .detail-text-section {
+    margin-bottom: 3rem;
+}
+
+.matte-painting-detail .detail-description {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Sub images section */
+.sub-images-section {
+    margin-bottom: 4rem;
+}
+
+.sub-images-title {
+    font-size: 2rem;
+    font-weight: 300;
+    color: white;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.sub-images-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+    margin: 0 auto;
+}
+
+.sub-image-item {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sub-image-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(255, 215, 0, 0.3);
+}
+
+.sub-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-bottom: 1rem;
+}
+
+.sub-image-name {
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.sub-image-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Video section */
+.video-section {
+    margin-bottom: 3rem;
+}
+
+.video-title {
+    font-size: 2rem;
+    font-weight: 300;
+    color: white;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.detail-video {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    display: block;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.video-description {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .sub-images-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .sub-image-item {
+        padding: 0.75rem;
+    }
+
+    .matte-painting-detail .detail-title {
+        font-size: 2rem;
+    }
+
+    .sub-images-title,
+    .video-title {
+        font-size: 1.5rem;
+    }
+}
+
 /* Pagination */
 .pagination {
     display: flex;
