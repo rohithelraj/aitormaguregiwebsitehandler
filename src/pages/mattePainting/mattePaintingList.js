@@ -4,7 +4,7 @@ const { Footer } = require('../../layout/footer');
 const { Breadcrumb } = require('../../components/Breadcrumb');
 const { Pagination } = require('../../components/Pagination');
 
-const MattePaintingListPage = ({ mattePaintings, currentPage, totalPages }) => {
+const MattePaintingListPage = ({ mattePaintings, currentPage, totalPages, footerData }) => {
   const breadcrumbItems = [
     { label: 'Home', link: '/index.html' },
     { label: 'Matte Painting' }
@@ -38,7 +38,7 @@ const MattePaintingListPage = ({ mattePaintings, currentPage, totalPages }) => {
         baseUrl: '/mattePainting/mattePainting-list-'
       })
     ),
-    React.createElement(Footer)
+    React.createElement(Footer, { footerData: footerData })
   );
 };
 

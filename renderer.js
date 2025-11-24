@@ -459,7 +459,8 @@ function renderArrayField(container, arr, path) {
     currentFilePath.includes('storyboard_thumbs.json') ||
     currentFilePath.includes('mattePainting_thumbs.json') ||
     (currentFilePath.includes('mattePainting') && path === 'subImages') ||
-    (currentFilePath.includes('about.json') && ['skills', 'software', 'productions', 'experience'].includes(path))
+    (currentFilePath.includes('about.json') && ['skills', 'software', 'productions', 'experience'].includes(path)) ||
+    (currentFilePath.includes('footer.json') && path === 'socialLinks')
   );
 
   // Add header with Add button for manageable arrays
@@ -1288,7 +1289,7 @@ async function handleCreateFile(category) {
 async function handleDeleteFile(filePath, category) {
   const fileName = filePath.replace(/\\/g, '/').split('/').pop();
 
-  // Don't delete thumbs files, first home file, or about.json
+  // Don't delete thumbs files, first home file, about.json, or footer.json
   if (fileName.includes('_thumbs.json')) {
     showToast('Cannot delete thumbs files', 'error');
     return;
@@ -1301,6 +1302,11 @@ async function handleDeleteFile(filePath, category) {
 
   if (fileName === 'about.json') {
     showToast('Cannot delete the about file', 'error');
+    return;
+  }
+
+  if (fileName === 'footer.json') {
+    showToast('Cannot delete the footer configuration file', 'error');
     return;
   }
 
@@ -1482,10 +1488,16 @@ function handleAddArrayItem(path) {
       projects: "Project details",
       description: "Additional description"
     };
+  } else if (path === 'socialLinks') {
+    newItem = {
+      name: "New Social Link",
+      url: "https://",
+      icon: "/icons/link.png"
+    };
   }
 
   // Add the new item to the array
-  if (['subImages', 'skills', 'software', 'productions', 'experience'].includes(path)) {
+  if (['subImages', 'skills', 'software', 'productions', 'experience', 'socialLinks'].includes(path)) {
     // For nested arrays, we need to update at the correct path
     const arrayData = getValueAtPath(currentJsonData, path);
     if (Array.isArray(arrayData)) {
@@ -1514,8 +1526,8 @@ async function handleDeleteArrayItem(path, index, itemTitle) {
   let targetArray;
   let deletedItem = null;
 
-  if (['subImages', 'skills', 'software', 'productions', 'experience'].includes(path)) {
-    // Handle nested arrays within files (about.json, mattePainting files, etc.)
+  if (['subImages', 'skills', 'software', 'productions', 'experience', 'socialLinks'].includes(path)) {
+    // Handle nested arrays within files (about.json, footer.json, mattePainting files, etc.)
     targetArray = getValueAtPath(currentJsonData, path);
     if (Array.isArray(targetArray) && index < targetArray.length) {
       deletedItem = JSON.parse(JSON.stringify(targetArray[index])); // Deep clone
@@ -1563,7 +1575,7 @@ async function handleDeleteArrayItem(path, index, itemTitle) {
   }
 
   // Update the current data and re-render
-  if (['subImages', 'skills', 'software', 'productions', 'experience'].includes(path)) {
+  if (['subImages', 'skills', 'software', 'productions', 'experience', 'socialLinks'].includes(path)) {
     renderFormView(currentJsonData);
   } else {
     currentJsonData = data;

@@ -2,7 +2,7 @@ const React = require('react');
 const { Navigation } = require('../layout/navigation');
 const { Footer } = require('../layout/footer');
 
-const ReelPage = ({ reel }) => {
+const ReelPage = ({ reel, footerData }) => {
   // Helper function to convert YouTube URL to embed URL
   const getYouTubeEmbedUrl = (url) => {
     if (!url) return null;
@@ -62,7 +62,7 @@ const ReelPage = ({ reel }) => {
         )
       )
     ),
-    React.createElement(Footer)
+    React.createElement(Footer, { footerData: footerData })
   );
 };
 

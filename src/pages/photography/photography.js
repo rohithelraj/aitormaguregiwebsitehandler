@@ -3,7 +3,7 @@ const { Navigation } = require('../../layout/navigation');
 const { Footer } = require('../../layout/footer');
 const { Breadcrumb } = require('../../components/Breadcrumb');
 
-const PhotographyPage = ({ content }) => {
+const PhotographyPage = ({ content, footerData }) => {
   const breadcrumbItems = [
     { label: 'Home', link: '/index.html' },
     { label: 'Photography', link: '/photography/photography-list-1.html' },
@@ -28,7 +28,7 @@ const PhotographyPage = ({ content }) => {
         )
       )
     ),
-    React.createElement(Footer)
+    React.createElement(Footer, { footerData: footerData })
   );
 };
 

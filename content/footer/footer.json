@@ -1,0 +1,30 @@
+{
+  "socialLinks": [
+    {
+      "name": "Vimeo",
+      "url": "https://vimeo.com/aitormaguregi",
+      "icon": "/icons/vimeo.png"
+    },
+    {
+      "name": "YouTube",
+      "url": "https://www.youtube.com/@aitormaguregi",
+      "icon": "/icons/youtube.png"
+    },
+    {
+      "name": "LinkedIn",
+      "url": "https://www.linkedin.com/in/aitormaguregi",
+      "icon": "/icons/linkedin.png"
+    },
+    {
+      "name": "Instagram",
+      "url": "https://www.instagram.com/aitor.maguregi/",
+      "icon": "/icons/instagram.png"
+    },
+    {
+      "name": "ArtStation",
+      "url": "https://www.artstation.com/aitormaguregi",
+      "icon": "/icons/artstation.png"
+    }
+  ],
+  "copyright": "©Aitor Maguregi 2025"
+}

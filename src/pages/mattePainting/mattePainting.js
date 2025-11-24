@@ -3,7 +3,7 @@ const { Navigation } = require('../../layout/navigation');
 const { Footer } = require('../../layout/footer');
 const { Breadcrumb } = require('../../components/Breadcrumb');
 
-const MattePaintingPage = ({ content }) => {
+const MattePaintingPage = ({ content, footerData }) => {
   const breadcrumbItems = [
     { label: 'Home', link: '/index.html' },
     { label: 'Matte Painting', link: '/mattePainting/mattePainting-list-1.html' },
@@ -140,7 +140,7 @@ const MattePaintingPage = ({ content }) => {
         )
       )
     ),
-    React.createElement(Footer)
+    React.createElement(Footer, { footerData: footerData })
   );
 };
 

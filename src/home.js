@@ -2,7 +2,7 @@ const React = require('react');
 const { Navigation } = require('../src/layout/navigation');
 const { Footer } = require('../src/layout/footer');
 
-const HomePage = ({ images }) => {
+const HomePage = ({ images, footerData }) => {
   return React.createElement('div', { className: 'page-container' },
     React.createElement(Navigation),
     React.createElement('main', { className: 'main-content' },
@@ -29,7 +29,7 @@ const HomePage = ({ images }) => {
         }, '→')
       )
     ),
-    React.createElement(Footer)
+    React.createElement(Footer, { footerData: footerData })
   );
 };
 

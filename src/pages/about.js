@@ -2,7 +2,7 @@ const React = require('react');
 const { Navigation } = require('../layout/navigation');
 const { Footer } = require('../layout/footer');
 
-const AboutPage = ({ about }) => {
+const AboutPage = ({ about, footerData }) => {
   return React.createElement('div', { className: 'page-container scrollable-page' },
     React.createElement(Navigation),
     React.createElement('main', { className: 'about-content' },
@@ -87,7 +87,7 @@ const AboutPage = ({ about }) => {
         )
       )
     ),
-    React.createElement(Footer)
+    React.createElement(Footer, { footerData: footerData })
   );
 };
 

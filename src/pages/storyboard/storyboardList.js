@@ -4,7 +4,7 @@ const { Footer } = require('../../layout/footer');
 const { Breadcrumb } = require('../../components/Breadcrumb');
 const { Pagination } = require('../../components/Pagination');
 
-const StoryboardListPage = ({ storyboards, currentPage, totalPages }) => {
+const StoryboardListPage = ({ storyboards, currentPage, totalPages, footerData }) => {
   const breadcrumbItems = [
     { label: 'Home', link: '/index.html' },
     { label: 'Storyboard' }
@@ -38,7 +38,7 @@ const StoryboardListPage = ({ storyboards, currentPage, totalPages }) => {
         baseUrl: '/storyboard/storyboard-list-'
       })
     ),
-    React.createElement(Footer)
+    React.createElement(Footer, { footerData: footerData })
   );
 };
 

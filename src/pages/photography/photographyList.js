@@ -4,7 +4,7 @@ const { Footer } = require('../../layout/footer');
 const { Breadcrumb } = require('../../components/Breadcrumb');
 const { Pagination } = require('../../components/Pagination');
 
-const PhotographyListPage = ({ photos, currentPage, totalPages }) => {
+const PhotographyListPage = ({ photos, currentPage, totalPages, footerData }) => {
   const breadcrumbItems = [
     { label: 'Home', link: '/index.html' },
     { label: 'Photography' }
@@ -38,7 +38,7 @@ const PhotographyListPage = ({ photos, currentPage, totalPages }) => {
         baseUrl: '/photography/photography-list-'
       })
     ),
-    React.createElement(Footer)
+    React.createElement(Footer, { footerData: footerData })
   );
 };
 

@@ -44,12 +44,13 @@ const { StoryboardPage } = require('./src/pages/storyboard/storyboard');
 const { MattePaintingListPage } = require('./src/pages/mattePainting/mattePaintingList');
 const { MattePaintingPage } = require('./src/pages/mattePainting/mattePainting');
 
-function generatePhotographyPage(photos, currentPage, totalPages) {
+function generatePhotographyPage(photos, currentPage, totalPages, footerData) {
   const listingHtml = renderToString(
     React.createElement(PhotographyListPage, {
       photos,
       currentPage,
-      totalPages
+      totalPages,
+      footerData
     })
   );
 
@@ -85,12 +86,13 @@ function generatePhotographyPage(photos, currentPage, totalPages) {
     </html>`;
 }
 
-function generateStoryboardPage(storyboards, currentPage, totalPages) {
+function generateStoryboardPage(storyboards, currentPage, totalPages, footerData) {
   const listingHtml = renderToString(
     React.createElement(StoryboardListPage, {
       storyboards,
       currentPage,
-      totalPages
+      totalPages,
+      footerData
     })
   );
 
@@ -126,12 +128,13 @@ function generateStoryboardPage(storyboards, currentPage, totalPages) {
     </html>`;
 }
 
-function generateMattePaintingPage(mattePaintings, currentPage, totalPages) {
+function generateMattePaintingPage(mattePaintings, currentPage, totalPages, footerData) {
   const listingHtml = renderToString(
     React.createElement(MattePaintingListPage, {
       mattePaintings,
       currentPage,
-      totalPages
+      totalPages,
+      footerData
     })
   );
 
@@ -175,12 +178,19 @@ async function buildSite() {
     fs.mkdirSync(distDir, { recursive: true });
   }
 
+  // Load footer configuration
+  const footerPath = path.join(__dirname, 'content/footer/footer.json');
+  let footerData = null;
+  if (fs.existsSync(footerPath)) {
+    footerData = JSON.parse(fs.readFileSync(footerPath, 'utf8'));
+  }
+
   const homeImages = fs.readdirSync(contentDir)
     .filter(file => file.endsWith('.json'))
     .sort()
     .map(file => JSON.parse(fs.readFileSync(path.join(contentDir, file), 'utf8')));
 
-  const homeHtml = renderToString(React.createElement(HomePage, { images: homeImages }));
+  const homeHtml = renderToString(React.createElement(HomePage, { images: homeImages, footerData: footerData }));
   const html = `<!DOCTYPE html>
     <html lang="en">
       <head>
@@ -265,7 +275,7 @@ async function buildSite() {
 
   // Build reel page
   const reelContent = JSON.parse(fs.readFileSync(path.join(__dirname, 'content/reel/reel.json'), 'utf8'));
-  const reelHtml = renderToString(React.createElement(ReelPage, { reel: reelContent }));
+  const reelHtml = renderToString(React.createElement(ReelPage, { reel: reelContent, footerData: footerData }));
   const reelPageHtml = `<!DOCTYPE html>
     <html lang="en">
       <head>
@@ -298,7 +308,7 @@ async function buildSite() {
 
   // Build about page
   const aboutContent = JSON.parse(fs.readFileSync(path.join(__dirname, 'content/about/about.json'), 'utf8'));
-  const aboutHtml = renderToString(React.createElement(AboutPage, { about: aboutContent }));
+  const aboutHtml = renderToString(React.createElement(AboutPage, { about: aboutContent, footerData: footerData }));
   const aboutPageHtml = `<!DOCTYPE html>
     <html lang="en">
       <head>
@@ -349,7 +359,7 @@ async function buildSite() {
 
     fs.writeFileSync(
       path.join(photographyDir, `photography-list-${page}.html`),
-      generatePhotographyPage(pagePhotos, page, photoTotalPages)
+      generatePhotographyPage(pagePhotos, page, photoTotalPages, footerData)
     );
   }
 
@@ -378,7 +388,7 @@ async function buildSite() {
   }).filter(item => item !== null);
 
   for (const photo of photographyDetails) {
-    const html = renderToString(React.createElement(PhotographyPage, { content: photo.content }));
+    const html = renderToString(React.createElement(PhotographyPage, { content: photo.content, footerData: footerData }));
     const fileName = `${photo.content.title.replace(/[^a-zA-Z0-9]/g, '-')}-${photo.photoNumber}.html`;
 
     fs.writeFileSync(
@@ -436,7 +446,7 @@ async function buildSite() {
 
     fs.writeFileSync(
       path.join(storyboardDir, `storyboard-list-${page}.html`),
-      generateStoryboardPage(pageStoryboards, page, storyboardTotalPages)
+      generateStoryboardPage(pageStoryboards, page, storyboardTotalPages, footerData)
     );
   }
 
@@ -465,7 +475,7 @@ async function buildSite() {
   }).filter(item => item !== null);
 
   for (const storyboard of storyboardDetails) {
-    const html = renderToString(React.createElement(StoryboardPage, { content: storyboard.content }));
+    const html = renderToString(React.createElement(StoryboardPage, { content: storyboard.content, footerData: footerData }));
     const fileName = `${storyboard.content.title.replace(/[^a-zA-Z0-9]/g, '-')}-${storyboard.storyboardNumber}.html`;
 
     fs.writeFileSync(
@@ -523,7 +533,7 @@ async function buildSite() {
 
     fs.writeFileSync(
       path.join(mattePaintingDir, `mattePainting-list-${page}.html`),
-      generateMattePaintingPage(pageMattePaintings, page, mattePaintingTotalPages)
+      generateMattePaintingPage(pageMattePaintings, page, mattePaintingTotalPages, footerData)
     );
   }
 
@@ -552,7 +562,7 @@ async function buildSite() {
   }).filter(item => item !== null);
 
   for (const mattePainting of mattePaintingDetails) {
-    const html = renderToString(React.createElement(MattePaintingPage, { content: mattePainting.content }));
+    const html = renderToString(React.createElement(MattePaintingPage, { content: mattePainting.content, footerData: footerData }));
     const title = mattePainting.content.tilte || mattePainting.content.title || 'Matte Painting';
     const fileName = `${title.replace(/[^a-zA-Z0-9]/g, '-')}-${mattePainting.mattePaintingNumber}.html`;
 
