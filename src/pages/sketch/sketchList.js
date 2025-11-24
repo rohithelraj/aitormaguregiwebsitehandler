@@ -18,7 +18,7 @@ const SketchListPage = ({ sketches, currentPage, totalPages, footerData }) => {
         sketches.map((sketch, index) => {
           // Calculate the actual sketch number based on current page and index
           const sketchNumber = ((currentPage - 1) * 6) + index + 1;
-          const detailUrl = `/sketch/pages/${sketch.title.replace(/[^a-zA-Z0-9]/g, '-')}-${sketchNumber}.html`;
+          const detailUrl = `/sketch/pages/Sketch-Example-${sketchNumber}.html`;
 
           return React.createElement('article', { className: 'sketch-card', key: index },
             React.createElement('a', { href: detailUrl, className: 'sketch-card-link' },

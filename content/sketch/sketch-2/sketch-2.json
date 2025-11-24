@@ -1,0 +1,17 @@
+{
+  "id": "sketch-2",
+  "tilte": "Bird that flies",
+  "mainImage": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/work/sketch/bird.webp",
+  "Description": "the birds that fly",
+  "mainImageToggle": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/work/sketch/bird2.webp",
+  "thumbnail": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/work/sketch/bird 8.webp",
+  "mainImageName": "the bird that flies away",
+  "videoUrl": "https://youtube.com/shorts/QA54hEMgOps?si=YSXBhpyRZzAXaehh",
+  "videoDescription": "No video at the mmoment",
+  "subImages": [
+    {
+      "name": "coroman",
+      "image": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/work/sketch/bird 9.webp"
+    }
+  ]
+}

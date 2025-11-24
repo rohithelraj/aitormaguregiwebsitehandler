@@ -18,7 +18,7 @@ const ColorStudyListPage = ({ colorStudies, currentPage, totalPages, footerData 
         colorStudies.map((colorStudy, index) => {
           // Calculate the actual color study number based on current page and index
           const colorStudyNumber = ((currentPage - 1) * 6) + index + 1;
-          const detailUrl = `/colorStudy/pages/${colorStudy.title.replace(/[^a-zA-Z0-9]/g, '-')}-${colorStudyNumber}.html`;
+          const detailUrl = `/colorStudy/pages/Color-Study-Example-${colorStudyNumber}.html`;
 
           return React.createElement('article', { className: 'color-study-card', key: index },
             React.createElement('a', { href: detailUrl, className: 'color-study-card-link' },

@@ -18,7 +18,7 @@ const ConceptArtListPage = ({ conceptArts, currentPage, totalPages, footerData }
         conceptArts.map((conceptArt, index) => {
           // Calculate the actual concept art number based on current page and index
           const conceptArtNumber = ((currentPage - 1) * 6) + index + 1;
-          const detailUrl = `/conceptArt/pages/${conceptArt.title.replace(/[^a-zA-Z0-9]/g, '-')}-${conceptArtNumber}.html`;
+          const detailUrl = `/conceptArt/pages/Concept-Art-Example-${conceptArtNumber}.html`;
 
           return React.createElement('article', { className: 'concept-art-card', key: index },
             React.createElement('a', { href: detailUrl, className: 'concept-art-card-link' },

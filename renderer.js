@@ -1311,7 +1311,7 @@ async function handleCreateFile(category) {
       subImages: []
     };
   } else if (category === 'conceptArt') {
-    fileName = `conceptArt${nextNum}.json`;
+    fileName = `conceptArt-${nextNum}.json`;
     initialData = {
       id: `conceptArt-${nextNum}`,
       tilte: "New Concept Art",
@@ -1325,7 +1325,7 @@ async function handleCreateFile(category) {
       subImages: []
     };
   } else if (category === 'keyframe') {
-    fileName = `keyframe${nextNum}.json`;
+    fileName = `keyframe-${nextNum}.json`;
     initialData = {
       id: `keyframe-${nextNum}`,
       tilte: "New Keyframe",
@@ -1339,7 +1339,7 @@ async function handleCreateFile(category) {
       subImages: []
     };
   } else if (category === 'colorStudy') {
-    fileName = `colorStudy${nextNum}.json`;
+    fileName = `colorStudy-${nextNum}.json`;
     initialData = {
       id: `colorStudy-${nextNum}`,
       tilte: "New Color Study",
@@ -1353,7 +1353,7 @@ async function handleCreateFile(category) {
       subImages: []
     };
   } else if (category === 'sketch') {
-    fileName = `sketch${nextNum}.json`;
+    fileName = `sketch-${nextNum}.json`;
     initialData = {
       id: `sketch-${nextNum}`,
       tilte: "New Sketch",

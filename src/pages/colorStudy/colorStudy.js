@@ -10,7 +10,7 @@ const ColorStudyPage = ({ content, footerData }) => {
     { label: content.tilte || content.title }
   ];
 
-  const hasToggle = content.mainImage && content.mainImageToggle;
+  const hasToggle = content.mainImage && content.mainImageToggle && content.mainImageToggle !== content.mainImage;
 
   // Helper function to convert YouTube URL to embed URL
   const getYouTubeEmbedUrl = (url) => {
@@ -109,7 +109,7 @@ const ColorStudyPage = ({ content, footerData }) => {
 
         // Modal for sub-images
         React.createElement('div', { id: 'imageModal', className: 'image-modal' },
-          React.createElement('span', { className: 'modal-close' }, '×'),
+          React.createElement('span', { className: 'modal-close' }, 'ï¿½'),
           React.createElement('div', { className: 'modal-content-wrapper' },
             React.createElement('img', { id: 'modalImage', className: 'modal-image', src: '', alt: '' }),
             React.createElement('div', { id: 'modalCaption', className: 'modal-caption' })

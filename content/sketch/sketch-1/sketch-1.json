@@ -8,5 +8,10 @@
   "mainImageName": "Wildlife Sketch Studies",
   "videoUrl": "",
   "videoDescription": "",
-  "subImages": []
+  "subImages": [
+    {
+      "name": "sdfdsgfwerwer",
+      "image": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/work/sketch/pastorland.webp"
+    }
+  ]
 }

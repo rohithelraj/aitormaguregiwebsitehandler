@@ -18,7 +18,7 @@ const KeyframeListPage = ({ keyframes, currentPage, totalPages, footerData }) =>
         keyframes.map((keyframe, index) => {
           // Calculate the actual keyframe number based on current page and index
           const keyframeNumber = ((currentPage - 1) * 6) + index + 1;
-          const detailUrl = `/keyframe/pages/${keyframe.title.replace(/[^a-zA-Z0-9]/g, '-')}-${keyframeNumber}.html`;
+          const detailUrl = `/keyframe/pages/Keyframe-Example-${keyframeNumber}.html`;
 
           return React.createElement('article', { className: 'keyframe-card', key: index },
             React.createElement('a', { href: detailUrl, className: 'keyframe-card-link' },
