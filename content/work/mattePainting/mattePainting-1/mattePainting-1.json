@@ -1,0 +1,25 @@
+{
+  "id": "mattePainting-1",
+  "tilte": "Eighteenth century ship",
+  "mainImage": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/work/mattePainting/mattePainting-1/caravel+at+rhodes.jpg",
+  "Description" : "The image provides data about a caravel visiting the port of Rhodos in the mediterranen sea.",
+  "mainImageToggle" : "",
+  "thumbnail" : "",
+  "mainImageName": "Caravel Visiting Rhodos",
+  "videoUrl": "",
+  "videoDescription": "",
+  "subImages": [
+    {
+      "name": "Caravel near a mediterranean village",
+      "image": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/work/mattePainting/mattePainting-1/caravel+in+the+mediterranean+coast.jpg"
+    },
+    {
+      "name": "Caravel amongst a rocky shore",
+      "image": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/work/mattePainting/mattePainting-1/caravel+leaving+a+rocky+shore.jpg"
+    },
+    {
+      "name": "Caravel Near the Colossus",
+      "image": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/work/mattePainting/mattePainting-1/caravel+with+statue+behind.jpg"
+    }
+  ]
+}

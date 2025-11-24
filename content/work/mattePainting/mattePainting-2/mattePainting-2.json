@@ -1,0 +1,25 @@
+{
+  "id": "mattePainting-2",
+  "tilte": "African Savannah",
+  "mainImage": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/work/mattePainting/mattePainting-2/hippos+in+the+river+with+okapi.jpg",
+  "Description" : "The image provides data about a group of hippos wallowing in a river in the african savannah .",
+  "mainImageToggle" : "",
+  "thumbnail" : "",
+  "mainImageName": "Hippos Wallowing in Kenyan River, with Okapis in the background",
+  "videoUrl": "",
+  "videoDescription": "",
+  "subImages": [
+    {
+      "name": "Hippos Wallowing in Kenyan River, with Giraffes in the background",
+      "image": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/work/mattePainting/mattePainting-2/hippos+in+the+river+with+girrafees.jpg"
+    },
+    {
+      "name": "Hippos Wallowing in Kenyan River, with Zebras in the background",
+      "image": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/work/mattePainting/mattePainting-2/hippos+in+the+river+with+zebras.jpg"
+    },
+    {
+      "name": "Hippos Wallowing in Kenyan River, with Giraffes",
+      "image": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/work/mattePainting/mattePainting-2/hippos+in+the+river+with+girrafees_2.jpg"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "title": "The Lost City Chronicles",
+  "description": "A visual journey through an abandoned metropolis reclaimed by nature",
+  "images": [
+    {
+      "name": "Gateway to Memories",
+      "description": "Rusted gates opening to overgrown streets where life once thrived",
+      "tag": "sub",
+      "url": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/storyboard/storyboard-1/From sketch to Final Shot_shortpixel_web.jpg"
+    },
+    {
+      "name": "Vertical Gardens",
+      "description": "Skyscrapers wrapped in vines creating cascading green waterfalls",
+      "tag": "sub",
+      "url": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/storyboard/storyboard-1/Mañana poster.jpg"
+    },
+    {
+      "name": "Silent Intersection",
+      "description": "Traffic lights still blinking for cars that no longer come",
+      "tag": "sub",
+      "url": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/storyboard/storyboard-1/Mañana_sec_02_compact_paneles en blanco y negro.jpg"
+    },
+    {
+      "name": "The Library Sanctuary",
+      "description": "Books scattered across marble floors, wisdom waiting to be rediscovered",
+      "tag": "sub",
+      "url": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/storyboard/storyboard-1/Mañana_sec_03_compact_paneles en blanco y negro_2_mejor calidad_2025_shortpixel_web.jpg"
+    },
+    {
+      "name": "Rooftop Wilderness",
+      "description": "Wild flowers blooming on concrete terraces high above the city",
+      "tag": "sub",
+      "url": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/storyboard/storyboard-1/Mañana_sec_nueva_compact_paneles en blanco y negro_2025_shortpixel_web.jpg"
+    },
+    {
+      "name": "Underground Refuge",
+      "description": "Subway tunnels transformed into underground forests with shafts of light",
+      "tag": "sub",
+      "url": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/storyboard/storyboard-1/Storyboard vs. Final_Mañana_montaje 1 en blanco y negro_2025_shortpixel_web.jpg"
+    },
+    {
+      "name": "Dawn of a New Era",
+      "description": "Sunrise illuminating the harmonious blend of nature and architecture",
+      "tag": "sub",
+      "url": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/storyboard/storyboard-1/Storyboard vs. Final_Mañana_montaje 2_2025_shortpixel_web.jpg"
+    }
+  ]
+}

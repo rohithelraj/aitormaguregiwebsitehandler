@@ -1,0 +1,36 @@
+{
+  "title": "Oceanic Depths",
+  "description": "Exploring the mysterious underwater world and its hidden wonders",
+  "images": [
+    {
+      "name": "Descent into Blue",
+      "description": "Sunlight filtering through the water surface as we begin our journey",
+      "tag": "sub",
+      "url": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/storyboard/storyboard-2/Euskaltzaindia_story_master (16-31) (2025)_shortpixel_web.jpg"
+    },
+    {
+      "name": "Coral Kingdom",
+      "description": "Vibrant reef teeming with colorful marine life and dancing anemones",
+      "tag": "sub",
+      "url": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/storyboard/storyboard-2/Euskaltzaindia_story_master (32-45) (2025)_shortpixel_web.jpg"
+    },
+    {
+      "name": "Shipwreck Secrets",
+      "description": "Ancient vessel resting on the ocean floor, home to countless creatures",
+      "tag": "sub",
+      "url": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/storyboard/storyboard-2/Euskaltzaindia_story_master (1-15) (2025)_shortpixel_web.jpg"
+    },
+    {
+      "name": "Bioluminescent Ballet",
+      "description": "Glowing jellyfish performing an ethereal dance in the deep darkness",
+      "tag": "sub",
+      "url": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/storyboard/storyboard-2/Storyboard vs. Final_Euskaltzaindia_montaje 1_shortpixel_web.jpg"
+    },
+    {
+      "name": "Return to Surface",
+      "description": "Breaking through the waves back into the world above",
+      "tag": "sub",
+      "url": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/storyboard/storyboard-2/Storyboard vs. Final_Euskaltzaindia_montaje 2_shortpixel_web.jpg"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "id": "mattePainting-3",
+  "tilte": "Eighteenth century ship",
+  "mainImage": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/work/mattePainting/mattePainting-3/horsemen+on+to+the+castle.jpg",
+  "Description" : "The image provides data about a caravel visiting the port of Rhodos in the mediterranen sea.",
+  "mainImageToggle" : "",
+  "thumbnail" : "",
+  "mainImageName": "Caravel Visiting Rhodos",
+  "videoUrl": "",
+  "videoDescription": "",
+  "subImages": [
+    {
+      "name": "Caravel near a mediterranean village",
+      "image": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/work/mattePainting/mattePainting-3/horsemen+and+dracula+castle.jpg"
+    },
+    {
+      "name": "Caravel amongst a rocky shore",
+      "image": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/work/mattePainting/mattePainting-3/horsemen+and+dracula+castle.jpg"
+    },
+    {
+      "name": "Caravel Near the Colossus",
+      "image": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/work/mattePainting/mattePainting-3/horsemen+and+dracula+castle.jpg"
+    }
+  ]
+}
