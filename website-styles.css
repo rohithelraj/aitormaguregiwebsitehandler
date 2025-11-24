@@ -96,6 +96,20 @@ html {
     display: inline-block;
 }
 
+.dropdown-trigger {
+    color: white;
+    text-decoration: none;
+    margin-left: 2rem;
+    font-size: 1rem;
+    padding-right: 3rem;
+    cursor: default;
+    transition: color 0.3s ease;
+}
+
+.dropdown:hover .dropdown-trigger {
+    color: #FFD700;
+}
+
 .dropdown-content {
     display: none;
     position: absolute;
@@ -1074,7 +1088,8 @@ html {
         position: relative;
     }
 
-    .dropdown > a {
+    .dropdown > a,
+    .dropdown-trigger {
         display: none;
     }
 

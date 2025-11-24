@@ -19,7 +19,7 @@ const Navigation = () => {
       React.createElement('a', { href: '/index.html' }, 'HOME'),
       React.createElement('a', { href: '/reel.html' }, 'REEL'),
       React.createElement('div', { className: 'dropdown' },
-        React.createElement('a', { href: '/work.html' }, 'WORK'),
+        React.createElement('span', { className: 'dropdown-trigger' }, 'WORK'),
         React.createElement('div', { className: 'dropdown-content' },
           React.createElement('a', { href: '/mattePainting/mattePainting-list-1.html' }, 'MATTE PAINTING'),
           React.createElement('a', { href: '/concept-art.html' }, 'CONCEPT ART'),

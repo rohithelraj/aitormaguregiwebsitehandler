@@ -59,6 +59,7 @@ function generatePhotographyPage(photos, currentPage, totalPages, footerData) {
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
         <meta http-equiv="Pragma" content="no-cache">
         <meta http-equiv="Expires" content="0">
@@ -101,6 +102,7 @@ function generateStoryboardPage(storyboards, currentPage, totalPages, footerData
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
         <meta http-equiv="Pragma" content="no-cache">
         <meta http-equiv="Expires" content="0">
@@ -143,6 +145,7 @@ function generateMattePaintingPage(mattePaintings, currentPage, totalPages, foot
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
         <meta http-equiv="Pragma" content="no-cache">
         <meta http-equiv="Expires" content="0">
@@ -197,6 +200,7 @@ async function buildSite() {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <title>Aitor Maguregi - Digital Visual Artist</title>
+        <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
         <link rel="stylesheet" href="styles.css">
         <script>
           function toggleMobileMenu() {
@@ -273,6 +277,19 @@ async function buildSite() {
   fs.writeFileSync(path.join(distDir, 'index.html'), html);
   fs.copyFileSync(path.join(__dirname, 'website-styles.css'), path.join(distDir, 'styles.css'));
 
+  // Copy icons directory if it exists
+  const iconsSourceDir = path.join(__dirname, 'icons');
+  const iconsDistDir = path.join(distDir, 'icons');
+  if (fs.existsSync(iconsSourceDir)) {
+    if (!fs.existsSync(iconsDistDir)) {
+      fs.mkdirSync(iconsDistDir, { recursive: true });
+    }
+    const iconFiles = fs.readdirSync(iconsSourceDir);
+    iconFiles.forEach(file => {
+      fs.copyFileSync(path.join(iconsSourceDir, file), path.join(iconsDistDir, file));
+    });
+  }
+
   // Build reel page
   const reelContent = JSON.parse(fs.readFileSync(path.join(__dirname, 'content/reel/reel.json'), 'utf8'));
   const reelHtml = renderToString(React.createElement(ReelPage, { reel: reelContent, footerData: footerData }));
@@ -281,6 +298,7 @@ async function buildSite() {
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
         <title>Reel - Aitor Maguregi</title>
         <link rel="stylesheet" href="styles.css">
         <script>
@@ -314,6 +332,7 @@ async function buildSite() {
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
         <title>About - Aitor Maguregi</title>
         <link rel="stylesheet" href="styles.css">
         <script>
@@ -398,6 +417,7 @@ async function buildSite() {
           <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+            <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
             <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
             <meta http-equiv="Pragma" content="no-cache">
             <meta http-equiv="Expires" content="0">
@@ -485,6 +505,7 @@ async function buildSite() {
           <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+            <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
             <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
             <meta http-equiv="Pragma" content="no-cache">
             <meta http-equiv="Expires" content="0">
@@ -573,6 +594,7 @@ async function buildSite() {
           <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+            <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
             <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
             <meta http-equiv="Pragma" content="no-cache">
             <meta http-equiv="Expires" content="0">

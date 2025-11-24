@@ -1,35 +1,20 @@
 {
   "profile": {
-    "name": "AITOR MAGUREGI",
+    "name": "AITOR MAGUREGI ORIA",
     "title": "DIGITAL VISUAL ARTIST",
     "photo": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/about/profileImage/aitor.jpeg",
     "location": "Krefeld,Germany",
-    "email": "email@example.com",
-    "bio": "Bio description goes here..."
+    "email": "aitor.maguregi@fertix.com",
+    "bio": "Currently focusing on my Matte Painting and Set Extension demo reel, ready to fly like a rocket wherever new opportunities might carry me soon."
   },
   "skills": [
     "Concept Art",
-    "Digital Matte Painting",
-    "Storyboarding",
-    "Photography",
-    "Digital Painting"
+    "Digital Matte Painting"
   ],
   "software": [
     {
       "name": "Adobe Photoshop",
       "icon": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/about/software/icons-0/Adobe_Photoshop_CC_icon.svg.png"
-    },
-    {
-      "name": "Maya",
-      "icon": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/about/software/icons-1/Dakirby309-Simply-Styled-Autodesk-Maya.256.png"
-    },
-    {
-      "name": "Blender",
-      "icon": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/about/software/icons-2/Blender_logo_no_text.svg.png"
-    },
-    {
-      "name": "ZBrush",
-      "icon": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/about/software/icons-3/zbrush-svgrepo-com.png"
     },
     {
       "name": "Adobe Illustrator",
@@ -47,11 +32,18 @@
   ],
   "experience": [
     {
-      "year": "2024",
-      "position": "Position Title",
-      "company": "Company Name",
-      "projects": "Project details and responsibilities",
-      "description": "Additional description"
+      "year": "Apr. 2018 - Jan. 2022",
+      "position": "Frrelance Digital Artist",
+      "company": "Dusseldorf, Germany",
+      "projects": "Storyboards, posters, illustration and other visual content.",
+      "description": ""
+    },
+    {
+      "year": "Feb. 2014 - Apr. 2014",
+      "position": "Concept Artist",
+      "company": "FrameOver, Valencia, Spain",
+      "projects": "Environment design for a 3D animation short film called \"The Watchmaker\" (unfortunately cancelled)",
+      "description": ""
     }
   ]
 }
