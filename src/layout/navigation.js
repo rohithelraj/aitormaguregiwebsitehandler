@@ -30,8 +30,7 @@ const Navigation = () => {
           React.createElement('a', { href: '/photography/photography-list-1.html' }, 'PHOTOGRAPHY')
         )
       ),
-      React.createElement('a', { href: '/about.html' }, 'ABOUT'),
-      React.createElement('a', { href: '/contact.html' }, 'CONTACT')
+      React.createElement('a', { href: '/about.html' }, 'ABOUT')
     )
   );
 };

@@ -36,6 +36,7 @@ const React = require('react');
 const { renderToString } = require('react-dom/server');
 const HomePage = require('./src/home').HomePage;
 const ReelPage = require('./src/pages/reel').ReelPage;
+const { AboutPage } = require('./src/pages/about');
 const { PhotographyListPage } = require('./src/pages/photography/photographyList');
 const { PhotographyPage } = require('./src/pages/photography/photography');
 const { StoryboardListPage } = require('./src/pages/storyboard/storyboardList');
@@ -294,6 +295,39 @@ async function buildSite() {
     </html>`;
   
   fs.writeFileSync(path.join(distDir, 'reel.html'), reelPageHtml);
+
+  // Build about page
+  const aboutContent = JSON.parse(fs.readFileSync(path.join(__dirname, 'content/about/about.json'), 'utf8'));
+  const aboutHtml = renderToString(React.createElement(AboutPage, { about: aboutContent }));
+  const aboutPageHtml = `<!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <title>About - Aitor Maguregi</title>
+        <link rel="stylesheet" href="styles.css">
+        <script>
+          function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const hamburger = document.querySelector('.hamburger-menu');
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+          }
+
+          document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.querySelector('.hamburger-menu');
+            if (hamburger) {
+              hamburger.addEventListener('click', toggleMobileMenu);
+            }
+          });
+        </script>
+      </head>
+      <body>
+        <div id="app">${aboutHtml}</div>
+      </body>
+    </html>`;
+
+  fs.writeFileSync(path.join(distDir, 'about.html'), aboutPageHtml);
 
   // Build photography list pages
   const photographyDir = path.join(distDir, 'photography');

@@ -1186,9 +1186,224 @@ html {
     .social-links {
         gap: 0.5rem;
     }
-    
+
     .social-icon {
         transform: scale(0.8);
     }
 }
-```
+
+/* About Page Styles */
+.about-content {
+    background: black;
+    color: white;
+    min-height: 100vh;
+    padding: 8rem 4rem 4rem 4rem;
+}
+
+.about-profile {
+    display: flex;
+    gap: 3rem;
+    margin-bottom: 4rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.profile-photo {
+    flex-shrink: 0;
+}
+
+.profile-photo img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #ffd700;
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.profile-name {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: #ffd700;
+}
+
+.profile-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 300;
+}
+
+.profile-location,
+.profile-email {
+    margin-bottom: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.profile-email a {
+    color: #ffd700;
+    text-decoration: none;
+}
+
+.profile-email a:hover {
+    text-decoration: underline;
+}
+
+.profile-bio {
+    margin-top: 1.5rem;
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+.about-section {
+    margin-bottom: 3rem;
+}
+
+.section-title {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: #ffd700;
+    border-bottom: 2px solid #ffd700;
+    padding-bottom: 0.5rem;
+}
+
+.skills-list,
+.software-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.skill-item,
+.software-item {
+    background: rgba(255, 215, 0, 0.1);
+    padding: 0.8rem 1.5rem;
+    border-radius: 5px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.software-icon {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.productions-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.production-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.production-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+.production-thumbnail {
+    margin-bottom: 1rem;
+}
+
+.production-thumbnail img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.production-year {
+    color: #ffd700;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.production-title {
+    font-size: 1.3rem;
+    margin: 0.5rem 0;
+}
+
+.production-role,
+.production-company {
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0.3rem 0;
+}
+
+.experience-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.experience-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2rem;
+    border-radius: 8px;
+    border-left: 3px solid #ffd700;
+}
+
+.experience-header {
+    margin-bottom: 1rem;
+}
+
+.experience-year {
+    color: #ffd700;
+    font-weight: bold;
+    font-size: 0.9rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.experience-position {
+    font-size: 1.5rem;
+    margin-bottom: 0.3rem;
+}
+
+.experience-company {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.1rem;
+}
+
+.experience-projects,
+.experience-description {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+    margin-top: 0.8rem;
+}
+
+/* Responsive About Page */
+@media (max-width: 768px) {
+    .about-content {
+        padding: 6rem 2rem 2rem 2rem;
+    }
+
+    .about-profile {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .profile-photo img {
+        width: 150px;
+        height: 150px;
+    }
+
+    .profile-name {
+        font-size: 2rem;
+    }
+
+    .productions-list {
+        grid-template-columns: 1fr;
+    }
+}

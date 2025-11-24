@@ -1,0 +1,57 @@
+{
+  "profile": {
+    "name": "AITOR MAGUREGI",
+    "title": "DIGITAL VISUAL ARTIST",
+    "photo": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/about/profileImage/aitor.jpeg",
+    "location": "Location",
+    "email": "email@example.com",
+    "bio": "Bio description goes here..."
+  },
+  "skills": [
+    "Concept Art",
+    "Digital Matte Painting",
+    "Storyboarding",
+    "Photography",
+    "Digital Painting"
+  ],
+  "software": [
+    {
+      "name": "Adobe Photoshop",
+      "icon": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/about/software/icons-0/Adobe_Photoshop_CC_icon.svg.png"
+    },
+    {
+      "name": "Maya",
+      "icon": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/about/software/icons-1/Dakirby309-Simply-Styled-Autodesk-Maya.256.png"
+    },
+    {
+      "name": "Blender",
+      "icon": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/about/software/icons-2/Blender_logo_no_text.svg.png"
+    },
+    {
+      "name": "ZBrush",
+      "icon": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/about/software/icons-3/zbrush-svgrepo-com.png"
+    },
+    {
+      "name": "Adobe Illustrator",
+      "icon": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/about/software/icons-4/Adobe_Illustrator_CC_icon.svg.png"
+    }
+  ],
+  "productions": [
+    {
+      "year": "2016",
+      "title": "Manana",
+      "role": "Illustrator",
+      "company": "Manu Aguilar",
+      "thumbnail": "https://aitormaguregiportfolioresources.s3.us-east-1.amazonaws.com/about/production/thumbnail-0/Mañana poster.jpg"
+    }
+  ],
+  "experience": [
+    {
+      "year": "2024",
+      "position": "Position Title",
+      "company": "Company Name",
+      "projects": "Project details and responsibilities",
+      "description": "Additional description"
+    }
+  ]
+}

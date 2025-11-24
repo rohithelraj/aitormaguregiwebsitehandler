@@ -144,7 +144,7 @@ function displayFileList(files) {
     accordionActions.className = 'accordion-actions';
 
     // Add "+" button for manageable categories
-    if (['home', 'photography', 'storyboard'].includes(category)) {
+    if (['home', 'photography', 'storyboard', 'mattePainting'].includes(category)) {
       const addBtn = document.createElement('button');
       addBtn.className = 'btn-add-file';
       addBtn.textContent = '+ New';
@@ -198,7 +198,7 @@ function displayFileList(files) {
       fileItem.style.justifyContent = 'space-between';
 
       // Add delete button for manageable categories
-      if (['home', 'photography', 'storyboard'].includes(category)) {
+      if (['home', 'photography', 'storyboard', 'mattePainting'].includes(category)) {
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'btn-delete-file';
         deleteBtn.textContent = '×';
@@ -311,7 +311,7 @@ function renderObjectFields(container, obj, path) {
     label.textContent = key;
     formGroup.appendChild(label);
 
-    if (isImageUrl(value)) {
+    if (isImageUrl(value, fullPath)) {
       renderImageField(formGroup, fullPath, value);
     } else if (typeof value === 'string') {
       renderTextField(formGroup, fullPath, value);
@@ -458,7 +458,8 @@ function renderArrayField(container, arr, path) {
     currentFilePath.includes('photography_thumbs.json') ||
     currentFilePath.includes('storyboard_thumbs.json') ||
     currentFilePath.includes('mattePainting_thumbs.json') ||
-    (currentFilePath.includes('mattePainting') && path === 'subImages')
+    (currentFilePath.includes('mattePainting') && path === 'subImages') ||
+    (currentFilePath.includes('about.json') && ['skills', 'software', 'productions', 'experience'].includes(path))
   );
 
   // Add header with Add button for manageable arrays
@@ -575,7 +576,7 @@ function loadArrayItemContent(container, item, itemPath) {
   if (typeof item === 'object' && item !== null && !Array.isArray(item)) {
     renderObjectFields(container, item, itemPath);
   } else if (typeof item === 'string') {
-    if (isImageUrl(item)) {
+    if (isImageUrl(item, itemPath)) {
       renderImageField(container, itemPath, item, true); // true = lazy load
     } else {
       renderTextField(container, itemPath, item);
@@ -585,8 +586,18 @@ function loadArrayItemContent(container, item, itemPath) {
   }
 }
 
-function isImageUrl(value) {
+function isImageUrl(value, fieldPath = '') {
   if (typeof value !== 'string') return false;
+
+  // Check field path/name for image-related keywords
+  const lowerPath = fieldPath.toLowerCase();
+  const imageFieldKeywords = ['photo', 'image', 'thumbnail', 'icon', 'thumburl', 'mainimage'];
+  const isImageField = imageFieldKeywords.some(keyword => lowerPath.includes(keyword));
+
+  // If field name suggests it's an image field, treat it as image
+  if (isImageField) return true;
+
+  // Otherwise check if value contains image extension or S3 URL
   const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'];
   const lowerValue = value.toLowerCase();
   return imageExtensions.some(ext => lowerValue.includes(ext)) ||
@@ -751,12 +762,41 @@ async function handleImageUpload(input, path, preview, uploadStatus, progressBar
     keyParts[keyParts.length - 1] = fileName; // Replace filename but keep folder structure
     s3Key = keyParts.join('/');
   } else {
-    // Create new S3 key based on current file path
-    const category = currentFilePath.includes('/photography/') ? 'photography' :
-                     currentFilePath.includes('/storyboard/') ? 'storyboard' :
-                     currentFilePath.includes('/work/') ? 'work' :
-                     currentFilePath.includes('/home/') ? 'home' : 'uploads';
-    s3Key = `${category}/${fileName}`;
+    // Create new S3 key based on current file path and field
+    let s3Folder;
+
+    if (currentFilePath.includes('/about/')) {
+      // Special handling for about.json fields
+      if (path === 'profile.photo') {
+        s3Folder = 'about/profileImage';
+      } else if (path && path.includes('software[') && path.includes('icon')) {
+        // Extract index from path like "software[0].icon"
+        const match = path.match(/software\[(\d+)\]/);
+        const index = match ? match[1] : '0';
+        s3Folder = `about/software/icons-${index}`;
+      } else if (path && path.includes('productions[') && path.includes('thumbnail')) {
+        // Extract index from path like "productions[2].thumbnail"
+        const match = path.match(/productions\[(\d+)\]/);
+        const index = match ? match[1] : '0';
+        s3Folder = `about/production/thumbnail-${index}`;
+      } else {
+        s3Folder = 'about';
+      }
+    } else if (currentFilePath.includes('/photography/')) {
+      s3Folder = 'photography';
+    } else if (currentFilePath.includes('/storyboard/')) {
+      s3Folder = 'storyboard';
+    } else if (currentFilePath.includes('/mattePainting/')) {
+      s3Folder = 'mattePainting';
+    } else if (currentFilePath.includes('/work/')) {
+      s3Folder = 'work';
+    } else if (currentFilePath.includes('/home/')) {
+      s3Folder = 'home';
+    } else {
+      s3Folder = 'uploads';
+    }
+
+    s3Key = `${s3Folder}/${fileName}`;
   }
 
   // Show upload progress
@@ -1248,9 +1288,19 @@ async function handleCreateFile(category) {
 async function handleDeleteFile(filePath, category) {
   const fileName = filePath.replace(/\\/g, '/').split('/').pop();
 
-  // Don't delete thumbs files
+  // Don't delete thumbs files, first home file, or about.json
   if (fileName.includes('_thumbs.json')) {
     showToast('Cannot delete thumbs files', 'error');
+    return;
+  }
+
+  if (fileName === 'home1.json') {
+    showToast('Cannot delete the first home file', 'error');
+    return;
+  }
+
+  if (fileName === 'about.json') {
+    showToast('Cannot delete the about file', 'error');
     return;
   }
 
@@ -1409,16 +1459,39 @@ function handleAddArrayItem(path) {
       name: "New Sub Image",
       image: autoGeneratedUrl
     };
+  } else if (path === 'skills') {
+    newItem = "New Skill";
+  } else if (path === 'software') {
+    newItem = {
+      name: "New Software",
+      icon: ""
+    };
+  } else if (path === 'productions') {
+    newItem = {
+      year: new Date().getFullYear().toString(),
+      title: "New Production",
+      role: "Role",
+      company: "Company Name",
+      thumbnail: ""
+    };
+  } else if (path === 'experience') {
+    newItem = {
+      year: new Date().getFullYear().toString(),
+      position: "Position Title",
+      company: "Company Name",
+      projects: "Project details",
+      description: "Additional description"
+    };
   }
 
   // Add the new item to the array
-  if (path === 'subImages') {
-    // For nested arrays like subImages, we need to update at the correct path
+  if (['subImages', 'skills', 'software', 'productions', 'experience'].includes(path)) {
+    // For nested arrays, we need to update at the correct path
     const arrayData = getValueAtPath(currentJsonData, path);
     if (Array.isArray(arrayData)) {
       arrayData.push(newItem);
     }
-    // Update the current data and re-render (for subImages)
+    // Update the current data and re-render
     renderFormView(currentJsonData);
   } else if (Array.isArray(data)) {
     data.push(newItem);
@@ -1437,12 +1510,12 @@ async function handleDeleteArrayItem(path, index, itemTitle) {
   // Get the current data
   const data = collectFormData();
 
-  // Get the array to delete from (could be root data or nested subImages)
+  // Get the array to delete from (could be root data or nested arrays)
   let targetArray;
   let deletedItem = null;
 
-  if (path === 'subImages') {
-    // Handle subImages array within mattePainting files
+  if (['subImages', 'skills', 'software', 'productions', 'experience'].includes(path)) {
+    // Handle nested arrays within files (about.json, mattePainting files, etc.)
     targetArray = getValueAtPath(currentJsonData, path);
     if (Array.isArray(targetArray) && index < targetArray.length) {
       deletedItem = JSON.parse(JSON.stringify(targetArray[index])); // Deep clone
@@ -1490,7 +1563,7 @@ async function handleDeleteArrayItem(path, index, itemTitle) {
   }
 
   // Update the current data and re-render
-  if (path === 'subImages') {
+  if (['subImages', 'skills', 'software', 'productions', 'experience'].includes(path)) {
     renderFormView(currentJsonData);
   } else {
     currentJsonData = data;
