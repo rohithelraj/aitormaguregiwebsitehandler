@@ -644,6 +644,7 @@ html {
 .image-toggle-container {
     display: flex;
     justify-content: center;
+    align-items: center;
     margin-bottom: 1.5rem;
 }
 
@@ -651,20 +652,64 @@ html {
     display: flex;
     align-items: center;
     cursor: pointer;
-    gap: 0.5rem;
-}
-
-.toggle-checkbox {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    accent-color: #ffd700;
+    gap: 1rem;
 }
 
 .toggle-text {
     color: white;
     font-size: 1rem;
     font-weight: 400;
+    order: -1;
+}
+
+/* Hide default checkbox */
+.toggle-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 60px;
+    height: 30px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 30px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Switch slider */
+.toggle-checkbox::before {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background-color: white;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Checked state */
+.toggle-checkbox:checked {
+    background-color: #ffd700;
+    border-color: #ffd700;
+}
+
+.toggle-checkbox:checked::before {
+    transform: translateX(30px);
+    background-color: white;
+}
+
+/* Hover effect */
+.toggle-checkbox:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.toggle-checkbox:checked:hover {
+    background-color: #ffed4e;
 }
 
 /* Main image section */
@@ -742,6 +787,15 @@ html {
     margin-bottom: 1rem;
 }
 
+.clickable-image {
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.clickable-image:hover {
+    opacity: 0.85;
+}
+
 .sub-image-name {
     font-size: 1.3rem;
     font-weight: 400;
@@ -753,6 +807,84 @@ html {
     font-size: 1rem;
     line-height: 1.6;
     color: rgba(255, 255, 255, 0.7);
+}
+
+/* Modal for sub-images */
+.image-modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+.modal-content-wrapper {
+    position: relative;
+    max-width: 1400px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modal-image {
+    width: 100%;
+    height: auto;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(255, 215, 0, 0.3);
+}
+
+.modal-caption {
+    color: white;
+    font-size: 1.3rem;
+    text-align: center;
+    margin-top: 1.5rem;
+    font-weight: 400;
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: #ffd700;
+    font-size: 50px;
+    font-weight: 300;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease;
+    z-index: 10001;
+    line-height: 1;
+    user-select: none;
+}
+
+.modal-close:hover {
+    color: #ffed4e;
+    transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+    .modal-close {
+        top: 10px;
+        right: 15px;
+        font-size: 40px;
+    }
+
+    .image-modal {
+        padding: 1rem;
+    }
+
+    .modal-caption {
+        font-size: 1.1rem;
+        margin-top: 1rem;
+    }
 }
 
 /* Video section */

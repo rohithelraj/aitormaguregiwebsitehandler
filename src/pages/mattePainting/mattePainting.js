@@ -59,12 +59,23 @@ const MattePaintingPage = ({ content }) => {
                 React.createElement('img', {
                   src: subImage.image,
                   alt: subImage.name || `Variation ${index + 1}`,
-                  className: 'sub-image'
+                  className: 'sub-image clickable-image',
+                  'data-image-url': subImage.image,
+                  'data-image-name': subImage.name || `Variation ${index + 1}`
                 }),
                 subImage.name && React.createElement('h3', { className: 'sub-image-name' }, subImage.name),
                 subImage.description && React.createElement('p', { className: 'sub-image-description' }, subImage.description)
               )
             )
+          )
+        ),
+
+        // Modal for sub-images
+        React.createElement('div', { id: 'imageModal', className: 'image-modal' },
+          React.createElement('span', { className: 'modal-close' }, '×'),
+          React.createElement('div', { className: 'modal-content-wrapper' },
+            React.createElement('img', { id: 'modalImage', className: 'modal-image', src: '', alt: '' }),
+            React.createElement('div', { id: 'modalCaption', className: 'modal-caption' })
           )
         ),
 

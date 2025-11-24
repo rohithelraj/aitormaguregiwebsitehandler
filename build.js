@@ -566,6 +566,49 @@ async function buildSite() {
                     });
                   }
                 }
+
+                // Modal functionality for sub-images
+                const modal = document.getElementById('imageModal');
+                const modalImage = document.getElementById('modalImage');
+                const modalCaption = document.getElementById('modalCaption');
+                const closeModal = document.querySelector('.modal-close');
+                const clickableImages = document.querySelectorAll('.clickable-image');
+
+                // Open modal when clicking on sub-images
+                clickableImages.forEach(function(img) {
+                  img.addEventListener('click', function() {
+                    modal.style.display = 'flex';
+                    modalImage.src = this.getAttribute('data-image-url');
+                    modalCaption.textContent = this.getAttribute('data-image-name');
+                    document.body.style.overflow = 'hidden'; // Prevent scrolling
+                  });
+                });
+
+                // Close modal when clicking X
+                if (closeModal) {
+                  closeModal.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto'; // Re-enable scrolling
+                  });
+                }
+
+                // Close modal when clicking outside the image
+                if (modal) {
+                  modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                      modal.style.display = 'none';
+                      document.body.style.overflow = 'auto'; // Re-enable scrolling
+                    }
+                  });
+                }
+
+                // Close modal on ESC key
+                document.addEventListener('keydown', function(e) {
+                  if (e.key === 'Escape' && modal.style.display === 'flex') {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto'; // Re-enable scrolling
+                  }
+                });
               });
             </script>
           </head>
