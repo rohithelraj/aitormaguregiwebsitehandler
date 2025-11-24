@@ -80,17 +80,15 @@
     ],
     "win": {
       "target": ["nsis", "portable"],
-      "icon": "build/icon.ico"
+      "icon": "build/icon.png"
     },
     "mac": {
       "target": ["dmg", "zip"],
-      "category": "public.app-category.productivity",
-      "icon": "build/icon.icns"
+      "category": "public.app-category.productivity"
     },
     "linux": {
       "target": ["AppImage", "deb"],
-      "category": "Utility",
-      "icon": "build/icon.png"
+      "category": "Utility"
     },
     "nsis": {
       "oneClick": false,
